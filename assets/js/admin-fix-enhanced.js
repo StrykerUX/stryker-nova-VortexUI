@@ -1,8 +1,7 @@
 /**
  * Administración de UI Panel SaaS Menu Manager - Versión mejorada
  * 
- * Esta versión corrige el problema con los botones editar y eliminar en la estructura del menú
- * y añade mejoras de confiabilidad y rendimiento.
+ * Esta versión elimina el botón de editar y mejora la funcionalidad de eliminar
  */
 (function($) {
     'use strict';
@@ -52,21 +51,12 @@
         // Cambio en el parent_id (para prevenir ciclos)
         $('#uipsm-item-parent').off('change').on('change', validateParentSelection);
         
-        // IMPORTANTE: Usar delegación de eventos para los botones editar y eliminar
+        // IMPORTANTE: Usar delegación de eventos para los botones eliminar
         // Esto garantiza que los eventos funcionen incluso después de reordenar o añadir elementos
-        $(document).off('click', '.uipsm-menu-edit').on('click', '.uipsm-menu-edit', editMenuItem);
         $(document).off('click', '.uipsm-menu-delete').on('click', '.uipsm-menu-delete', deleteMenuItem);
         
-        // Verificación adicional para asegurar que los botones funcionen
-        setTimeout(function() {
-            // Comprobar si los botones responden a eventos
-            var editButtons = $('.uipsm-menu-edit');
-            var deleteButtons = $('.uipsm-menu-delete');
-            
-            if (editButtons.length > 0 || deleteButtons.length > 0) {
-                console.log('Encontrados botones de editar/eliminar: E=' + editButtons.length + ', D=' + deleteButtons.length);
-            }
-        }, 1000);
+        // Botón de eliminar todos los elementos
+        $('#uipsm-delete-all').off('click').on('click', deleteAllItems);
     }
     
     /**
@@ -121,16 +111,6 @@
         
         // Inicializar ordenamiento
         initSortable();
-        
-        // Reinicializar eventos para asegurar la detección de clics
-        setTimeout(function() {
-            console.log('Verificando eventos en los botones después de renderizar...');
-            // La delegación debería funcionar, pero por seguridad comprobamos
-            var test = $('.uipsm-menu-edit').first();
-            if (test.length > 0) {
-                console.log('Botón de editar encontrado y listo');
-            }
-        }, 500);
     }
     
     /**
@@ -186,10 +166,9 @@
                 '</div>'
             );
             
-            // Añadir controles con IDs únicos para facilitar la depuración
+            // Añadir solo el botón de eliminar
             var $controls = $('<div class="uipsm-menu-controls"></div>');
-            $controls.append('<button type="button" class="uipsm-menu-edit" data-id="' + item.data.id + '" id="edit-' + item.data.id + '"><span class="dashicons dashicons-edit"></span></button>');
-            $controls.append('<button type="button" class="uipsm-menu-delete" data-id="' + item.data.id + '" id="delete-' + item.data.id + '"><span class="dashicons dashicons-trash"></span></button>');
+            $controls.append('<button type="button" class="uipsm-menu-delete" data-id="' + item.data.id + '" id="delete-' + item.data.id + '"><span class="dashicons dashicons-trash"></span> Eliminar</button>');
             
             $content.append($controls);
             $handle.append($content);
@@ -219,10 +198,6 @@
             update: function(event, ui) {
                 // Actualizar orden y jerarquía después de ordenar
                 updateItemsOrder();
-            },
-            stop: function(event, ui) {
-                // Después de detener el ordenamiento, verificar que los eventos sigan funcionando
-                console.log('Ordenamiento completado, verificando eventos...');
             }
         });
     }
@@ -323,66 +298,6 @@
     }
     
     /**
-     * Editar elemento del menú
-     */
-    function editMenuItem(e) {
-        e.preventDefault();
-        console.log('Clic en botón editar detectado');
-        
-        var itemId = $(this).data('id');
-        var item = null;
-        
-        // Buscar elemento en el array
-        menuItems.forEach(function(existingItem) {
-            if (parseInt(existingItem.id) === parseInt(itemId)) {
-                item = existingItem;
-            }
-        });
-        
-        if (!item) {
-            alert('Elemento no encontrado (ID: ' + itemId + ')');
-            return;
-        }
-        
-        // Cambiar estado a edición
-        isEditing = true;
-        
-        // Llenar formulario con datos del elemento
-        $('#uipsm-item-id').val(item.id);
-        $('#uipsm-item-title').val(item.title);
-        $('#uipsm-item-menu-type').val(item.menu_type).trigger('change');
-        $('#uipsm-item-url').val(item.url);
-        $('#uipsm-item-target').val(item.target);
-        $('#uipsm-item-icon').val(item.icon);
-        
-        // Actualizar vista previa del icono
-        updateIconPreview();
-        
-        // Manejar parent_id para evitar ciclos
-        $('#uipsm-item-parent option').prop('disabled', false);
-        $('#uipsm-item-parent option[value="' + item.id + '"]').prop('disabled', true);
-        $('#uipsm-item-parent').val(item.parent_id);
-        
-        // Manejar roles de usuario
-        var roles = item.user_roles ? item.user_roles.split(',') : [];
-        $('#uipsm-item-roles option').prop('selected', false);
-        roles.forEach(function(role) {
-            $('#uipsm-item-roles option[value="' + role + '"]').prop('selected', true);
-        });
-        
-        // Cambiar texto del botón
-        $('#uipsm-add-item-form button[type="submit"]').text(uipsm.strings.edit_item);
-        
-        // Mostrar botón de cancelar
-        $('#uipsm-cancel-edit').show();
-        
-        // Desplazarse al formulario
-        $('html, body').animate({
-            scrollTop: $('#uipsm-add-item-form').offset().top - 50
-        }, 500);
-    }
-    
-    /**
      * Eliminar elemento del menú
      */
     function deleteMenuItem(e) {
@@ -398,7 +313,7 @@
         // Mostrar indicador de carga
         var $button = $(this);
         var originalText = $button.html();
-        $button.html('<span class="dashicons dashicons-update uipsm-spin"></span>');
+        $button.html('<span class="dashicons dashicons-update uipsm-spin"></span> Eliminando...');
         $button.prop('disabled', true);
         
         $.ajax({
@@ -410,10 +325,6 @@
                 id: itemId
             },
             success: function(response) {
-                // Restaurar botón
-                $button.html(originalText);
-                $button.prop('disabled', false);
-                
                 if (response.success) {
                     // Eliminar elemento del array local
                     menuItems = menuItems.filter(function(item) {
@@ -434,6 +345,9 @@
                     
                     alert(uipsm.strings.delete_success);
                 } else {
+                    // Restaurar botón
+                    $button.html(originalText);
+                    $button.prop('disabled', false);
                     alert(response.data || uipsm.strings.delete_error);
                 }
             },
@@ -449,6 +363,53 @@
     }
     
     /**
+     * Eliminar todos los elementos del menú
+     */
+    function deleteAllItems() {
+        if (!confirm(uipsm.strings.confirm_delete_all)) {
+            return;
+        }
+        
+        // Mostrar indicador de carga
+        var $button = $('#uipsm-delete-all');
+        var originalText = $button.text();
+        $button.text('Eliminando...').prop('disabled', true);
+        
+        $.ajax({
+            url: uipsm.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'uipsm_delete_all_menu_items',
+                nonce: uipsm.nonce,
+                menu_id: 'sidebar'
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Vaciar el array local
+                    menuItems = [];
+                    
+                    // Actualizar interfaz
+                    renderMenuItems();
+                    updateParentDropdown();
+                    renderPreview();
+                    
+                    // Restaurar botón y mostrar mensaje
+                    $button.text(originalText).prop('disabled', false);
+                    alert(uipsm.strings.delete_all_success);
+                } else {
+                    $button.text(originalText).prop('disabled', false);
+                    alert(response.data || uipsm.strings.delete_all_error);
+                }
+            },
+            error: function(xhr, status, error) {
+                $button.text(originalText).prop('disabled', false);
+                console.error('Error AJAX al eliminar todos los elementos:', error);
+                alert('Error de conexión al eliminar todos los elementos: ' + error);
+            }
+        });
+    }
+
+    /**
      * Cancelar edición de elemento
      */
     function cancelEdit() {
@@ -460,7 +421,6 @@
      * Guardar menú completo
      */
     function saveEntireMenu() {
-        // No es necesario enviar todos los elementos, ya que se actualizan uno a uno
         alert(uipsm.strings.save_success);
     }
     
@@ -641,19 +601,6 @@
         $('#uipsm-cancel-edit').hide();
         isEditing = false;
     }
-    
-    // Verificación periódica para asegurar que los eventos estén conectados
-    setInterval(function() {
-        // Verificar si hay botones sin eventos y reconectarlos si es necesario
-        var editCount = $('.uipsm-menu-edit').length;
-        var deleteCount = $('.uipsm-menu-delete').length;
-        
-        if (editCount > 0 || deleteCount > 0) {
-            // Los botones están presentes, verificar que tengan eventos
-            console.log('Verificación periódica: Botones editar/eliminar presentes');
-        }
-    }, 10000); // Verificar cada 10 segundos
-    
 })(jQuery);
 
 // Añadir un estilo CSS para el spinner de carga
@@ -667,15 +614,17 @@ document.addEventListener('DOMContentLoaded', function() {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .uipsm-menu-delete {
+            background-color: #f44336 !important;
+            color: white !important;
+            border: none !important;
+            padding: 5px 10px !important;
+            border-radius: 3px !important;
+            cursor: pointer !important;
+        }
+        .uipsm-menu-delete:hover {
+            background-color: #d32f2f !important;
+        }
     `;
     document.head.appendChild(style);
-});
-
-// Reintentar en caso de fallo
-window.addEventListener('load', function() {
-    setTimeout(function() {
-        if (jQuery('.uipsm-menu-edit').length > 0) {
-            console.log('Verificación final: Botones presentes después de la carga completa de la página');
-        }
-    }, 2000);
 });
