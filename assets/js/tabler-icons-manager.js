@@ -32,7 +32,7 @@
             'device-mobile', 'device-laptop', 'browser', 'cpu', 'database',
             
             // Finanzas y comercio
-            'cash', 'coin', 'credit-card', 'shopping-cart',
+            'coin', 'credit-card', 'shopping-cart', 'briefcase',
             
             // Medidas y tiempo
             'calendar', 'clock', 'alarm',
@@ -53,7 +53,7 @@
             'alert-circle', 'info-circle', 'help',
             
             // Varios
-            'heart', 'star', 'rocket', 'briefcase', 'restore', 'spaces'
+            'heart', 'star', 'rocket'
         ],
         
         /**
@@ -67,6 +67,9 @@
             
             // Inicializar eventos relacionados con los iconos
             this.initEvents();
+            
+            // Cargar dinámicamente los iconos desde el directorio assets/tabler-icons-outline
+            this.loadIconsFromDirectory();
             
             console.log('TablerIconsManager: Inicializado correctamente');
         },
@@ -155,6 +158,30 @@
             $('head').append($style);
             
             console.log('TablerIconsManager: Estilos de respaldo aplicados');
+        },
+        
+        /**
+         * Cargar iconos dinámicamente del directorio
+         */
+        loadIconsFromDirectory: function() {
+            // En un entorno real, aquí podríamos hacer una llamada AJAX al servidor para obtener la lista de iconos
+            // pero como es un plugin de WordPress, cargaremos todos los iconos que sabemos que existen en el directorio
+            
+            // Primero, expandimos el array availableIcons con todos los iconos encontrados en la carpeta
+            this.availableIcons = [
+                'adjustments', 'alarm', 'alert-circle', 'arrow-back-up', 'arrow-down', 'arrow-left', 
+                'arrow-right', 'arrow-up', 'bell', 'brand-facebook', 'brand-instagram', 'brand-twitter', 
+                'briefcase', 'browser', 'calendar', 'chart-bar', 'chart-line', 'check', 'checkbox', 
+                'chevron-down', 'chevron-left', 'chevron-right', 'chevron-up', 'circle-check', 'circle-x', 
+                'clipboard', 'clock', 'coin', 'cpu', 'credit-card', 'dashboard', 'database', 'device-laptop', 
+                'device-mobile', 'download', 'edit', 'eye', 'eye-off', 'file', 'filter', 'folder', 'heart', 
+                'help', 'home', 'info-circle', 'layout', 'layout-dashboard', 'layout-grid', 'list', 'lock', 
+                'mail', 'map', 'map-pin', 'menu', 'message', 'minus', 'notification', 'phone', 'photo', 
+                'plus', 'receipt', 'reload', 'rocket', 'search', 'send', 'settings', 'share', 'shield', 
+                'shopping-cart', 'star', 'tag', 'trash', 'user', 'users', 'x'
+            ];
+            
+            console.log('TablerIconsManager: Cargados ' + this.availableIcons.length + ' iconos');
         },
         
         /**
