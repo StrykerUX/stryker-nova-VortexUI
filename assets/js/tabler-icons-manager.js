@@ -122,8 +122,42 @@
          * Cargar iconos dinámicamente del directorio
          */
         loadIconsFromDirectory: function() {
-            // Esta lista es una representación exacta de los archivos SVG que hay en la carpeta assets/tabler-icons-outline/
-            // basado en la lista que vimos anteriormente en el repositorio
+            const self = this;
+            
+            // Hacer una solicitud AJAX para escanear dinámicamente los archivos en la carpeta
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'uipsm_get_tabler_icons',
+                    nonce: uipsm.nonce
+                },
+                success: function(response) {
+                    if (response.success && response.data) {
+                        self.availableIcons = response.data;
+                        console.log('TablerIconsManager: Se cargaron ' + self.availableIcons.length + ' iconos dinámicamente');
+                        
+                        // Reinicializar el selector de iconos con los nuevos iconos
+                        self.initIconPicker();
+                    } else {
+                        console.error('TablerIconsManager: Error al cargar iconos dinámicamente', response);
+                        // Cargar la lista de respaldo en caso de error
+                        self.loadBackupIconsList();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error('TablerIconsManager: Error AJAX al cargar iconos', error);
+                    // Cargar la lista de respaldo en caso de error
+                    self.loadBackupIconsList();
+                }
+            });
+        },
+        
+        /**
+         * Cargar lista de respaldo de iconos en caso de que falle la carga dinámica
+         */
+        loadBackupIconsList: function() {
+            // Esta es una lista de respaldo derivada de los archivos en la carpeta
             this.availableIcons = [
                 'adjustments', 'alarm', 'alert-circle', 'arrow-back-up', 'arrow-down', 'arrow-left', 
                 'arrow-right', 'arrow-up', 'bell', 'brand-facebook', 'brand-instagram', 'brand-twitter', 
@@ -137,7 +171,10 @@
                 'shopping-cart', 'star', 'tag', 'trash', 'user', 'users', 'x'
             ];
             
-            console.log('TablerIconsManager: Cargados ' + this.availableIcons.length + ' iconos');
+            console.log('TablerIconsManager: Cargada lista de respaldo con ' + this.availableIcons.length + ' iconos');
+            
+            // Inicializar el selector de iconos con la lista de respaldo
+            this.initIconPicker();
         },
         
         /**
@@ -146,7 +183,8 @@
         initEvents: function() {
             // Si estamos en la página de administración del plugin
             if ($('.uipsm-admin-container').length) {
-                this.initIconPicker();
+                // El selector de iconos se inicializará cuando tengamos la lista completa
+                // Ver loadIconsFromDirectory() y loadBackupIconsList()
             }
         },
         
@@ -158,13 +196,52 @@
             
             // Construir la cuadrícula de iconos
             let iconsHtml = '';
-            const self = this;
+            
+            // Ordenar alfabéticamente los iconos para facilitar la búsqueda
+            this.availableIcons.sort();
+            
+            // Agrupar los iconos por categorías (si el nombre contiene guiones)
+            const categorizedIcons = {};
             
             this.availableIcons.forEach(function(icon) {
-                iconsHtml += '<div class="uipsm-icon-item" data-icon="ti ti-' + icon + '">' +
-                    '<i class="ti ti-' + icon + '"></i>' +
-                    '<span>ti-' + icon + '</span>' +
-                '</div>';
+                let category = 'General';
+                
+                // Intentar extraer una categoría del nombre del icono
+                if (icon.includes('-')) {
+                    const parts = icon.split('-');
+                    if (parts.length >= 2 && parts[0] === 'brand') {
+                        category = 'Marcas';
+                    } else if (parts.length >= 2 && parts[0] === 'layout') {
+                        category = 'Diseño';
+                    } else if (parts.length >= 2 && parts[0] === 'device') {
+                        category = 'Dispositivos';
+                    } else if (parts.length >= 2 && parts[0] === 'file') {
+                        category = 'Archivos';
+                    } else if (parts.length >= 2 && parts[0] === 'chart') {
+                        category = 'Gráficos';
+                    }
+                }
+                
+                if (!categorizedIcons[category]) {
+                    categorizedIcons[category] = [];
+                }
+                
+                categorizedIcons[category].push(icon);
+            });
+            
+            // Generar HTML para cada categoría
+            Object.keys(categorizedIcons).sort().forEach(function(category) {
+                iconsHtml += '<h4 class="uipsm-icon-category">' + category + ' (' + categorizedIcons[category].length + ')</h4>';
+                iconsHtml += '<div class="uipsm-icons-category-grid">';
+                
+                categorizedIcons[category].forEach(function(icon) {
+                    iconsHtml += '<div class="uipsm-icon-item" data-icon="ti ti-' + icon + '" data-category="' + category + '">' +
+                        '<i class="ti ti-' + icon + '"></i>' +
+                        '<span>ti-' + icon + '</span>' +
+                    '</div>';
+                });
+                
+                iconsHtml += '</div>';
             });
             
             // Reemplazar la cuadrícula existente
@@ -188,8 +265,58 @@
                 
                 // Inicializar buscador de iconos
                 this.initIconSearch();
+                
+                // Aplicar estilos para la nueva estructura
+                this.applyGridStyles();
             } else {
                 console.error('TablerIconsManager: No se encontró el contenedor .uipsm-icons-grid');
+            }
+        },
+        
+        /**
+         * Aplicar estilos adicionales para la nueva estructura de iconos
+         */
+        applyGridStyles: function() {
+            // Crear estilos dinámicos para las categorías
+            const categoryStyles = `
+                .uipsm-icon-category {
+                    margin: 15px 0 5px;
+                    padding-bottom: 5px;
+                    border-bottom: 1px solid #eee;
+                    color: #23282d;
+                    font-size: 14px;
+                }
+                
+                .uipsm-icons-category-grid {
+                    display: grid;
+                    grid-template-columns: repeat(3, 1fr);
+                    gap: 8px;
+                    margin-bottom: 15px;
+                }
+                
+                .uipsm-icons-grid {
+                    max-height: 400px;
+                    overflow-y: auto;
+                    padding-right: 10px;
+                }
+                
+                /* Estilos para pantallas más grandes */
+                @media (min-width: 1200px) {
+                    .uipsm-icons-category-grid {
+                        grid-template-columns: repeat(4, 1fr);
+                    }
+                }
+                
+                @media (max-width: 782px) {
+                    .uipsm-icons-category-grid {
+                        grid-template-columns: repeat(2, 1fr);
+                    }
+                }
+            `;
+            
+            // Añadir estilos al DOM
+            if (!$('#tabler-icons-grid-styles').length) {
+                $('<style id="tabler-icons-grid-styles"></style>').html(categoryStyles).appendTo('head');
             }
         },
         
@@ -200,14 +327,26 @@
             $('#uipsm-icon-search').off('input').on('input', function() {
                 const searchTerm = $(this).val().toLowerCase();
                 
-                $('.uipsm-icon-item').each(function() {
-                    const iconName = $(this).data('icon').toLowerCase();
-                    if (iconName.includes(searchTerm)) {
-                        $(this).show();
-                    } else {
-                        $(this).hide();
-                    }
-                });
+                if (searchTerm === '') {
+                    // Mostrar todas las categorías y todos los iconos
+                    $('.uipsm-icon-category').show();
+                    $('.uipsm-icon-item').show();
+                } else {
+                    // Primero ocultar todas las categorías
+                    $('.uipsm-icon-category').hide();
+                    // Y todos los iconos
+                    $('.uipsm-icon-item').hide();
+                    
+                    // Luego mostrar solo los iconos que coinciden
+                    $('.uipsm-icon-item').each(function() {
+                        const iconName = $(this).data('icon').toLowerCase();
+                        if (iconName.includes(searchTerm)) {
+                            $(this).show();
+                            // Mostrar la categoría correspondiente
+                            $(this).closest('.uipsm-icons-category-grid').prev('.uipsm-icon-category').show();
+                        }
+                    });
+                }
             });
             
             console.log('TablerIconsManager: Búsqueda de iconos inicializada');
