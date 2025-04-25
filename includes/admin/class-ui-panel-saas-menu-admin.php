@@ -239,7 +239,7 @@ class UI_Panel_SaaS_Menu_Admin {
                             <div class="uipsm-menu-actions">
                                 <button id="uipsm-save-menu" class="button button-primary"><?php _e('Guardar cambios', 'uipsm'); ?></button>
                                 <button id="uipsm-delete-mode" class="button button-secondary" style="margin-left: 10px;"><?php _e('Eliminar elementos uno por uno', 'uipsm'); ?></button>
-                                <button id="uipsm-delete-all" class="button button-secondary button-danger" style="margin-left: 10px;"><?php _e('Eliminar todos los elementos', 'uipsm'); ?></button>
+                                <button id="uipsm-delete-all" class="button button-danger" style="margin-left: 10px;"><?php _e('Eliminar todos los elementos', 'uipsm'); ?></button>
                             </div>
                         </div>
                     </div>
@@ -264,8 +264,7 @@ class UI_Panel_SaaS_Menu_Admin {
                             <ol>
                                 <li><?php _e('Utiliza el formulario de la izquierda para añadir nuevos elementos al menú.', 'uipsm'); ?></li>
                                 <li><?php _e('Arrastra y suelta los elementos para cambiar su orden.', 'uipsm'); ?></li>
-                                <li><?php _e('Haz clic en un elemento para editarlo.', 'uipsm'); ?></li>
-                                <li><?php _e('Haz clic en el icono de papelera para eliminar un elemento.', 'uipsm'); ?></li>
+                                <li><?php _e('Haz clic en el botón "Eliminar" junto a cada elemento para eliminarlo individualmente.', 'uipsm'); ?></li>
                                 <li><?php _e('Utiliza "Eliminar elementos uno por uno" para entrar en un modo de eliminación rápida.', 'uipsm'); ?></li>
                                 <li><?php _e('Usa "Eliminar todos los elementos" si deseas vaciar completamente el menú.', 'uipsm'); ?></li>
                                 <li><?php _e('Haz clic en "Guardar cambios" para aplicar los cambios.', 'uipsm'); ?></li>
@@ -288,179 +287,6 @@ class UI_Panel_SaaS_Menu_Admin {
                 </div>
             </div>
         </div>
-        
-        <style>
-        .button-danger {
-            background-color: #AA0000 !important;
-            border-color: #880000 !important;
-            color: white !important;
-            text-shadow: none !important;
-        }
-        .button-danger:hover {
-            background-color: #CC0000 !important;
-            border-color: #AA0000 !important;
-        }
-        .uipsm-delete-mode .uipsm-menu-item {
-            position: relative;
-            cursor: pointer;
-        }
-        .uipsm-delete-mode .uipsm-menu-item:hover::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 0, 0, 0.1);
-            z-index: 1;
-            pointer-events: none;
-        }
-        .uipsm-delete-mode .uipsm-menu-controls {
-            display: none;
-        }
-        </style>
-        
-        <!-- Script adicional para reforzar la funcionalidad de los botones -->
-        <script type="text/javascript">
-            // Script inline para asegurarse de que los botones funcionen
-            jQuery(document).ready(function($) {
-                // Esperar a que todo esté cargado
-                setTimeout(function() {
-                    // Asegurarse que los eventos están conectados
-                    $(document).off('click', '.uipsm-menu-edit').on('click', '.uipsm-menu-edit', function(e) {
-                        e.preventDefault();
-                        var itemId = $(this).data('id');
-                        console.log('Clic en botón editar inline:', itemId);
-                        
-                        // Si hay una función editMenuItem definida, usarla
-                        if (typeof window.editMenuItem === 'function') {
-                            window.editMenuItem.call(this);
-                        }
-                    });
-                    
-                    $(document).off('click', '.uipsm-menu-delete').on('click', '.uipsm-menu-delete', function(e) {
-                        e.preventDefault();
-                        var itemId = $(this).data('id');
-                        console.log('Clic en botón eliminar inline:', itemId);
-                        
-                        if (confirm('¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer.')) {
-                            // AJAX para eliminar el elemento
-                            $.ajax({
-                                url: ajaxurl,
-                                type: 'POST',
-                                data: {
-                                    action: 'uipsm_delete_menu_item',
-                                    nonce: '<?php echo wp_create_nonce('uipsm-admin'); ?>',
-                                    id: itemId
-                                },
-                                success: function(response) {
-                                    if (response.success) {
-                                        // Recargar la página para ver los cambios
-                                        location.reload();
-                                    } else {
-                                        alert('Error al eliminar el elemento');
-                                    }
-                                },
-                                error: function() {
-                                    alert('Error de conexión al eliminar el elemento');
-                                }
-                            });
-                        }
-                    });
-                    
-                    // Modo de eliminación uno por uno
-                    var deleteMode = false;
-                    
-                    $('#uipsm-delete-mode').on('click', function() {
-                        if (!deleteMode) {
-                            // Activar modo eliminación
-                            deleteMode = true;
-                            $(this).text(uipsm.strings.end_delete_mode);
-                            $('#uipsm-menu-items').addClass('uipsm-delete-mode');
-                            alert(uipsm.strings.enter_delete_mode);
-                            
-                            // Añadir evento de clic a los elementos del menú
-                            $(document).on('click', '.uipsm-delete-mode .uipsm-menu-item', function(e) {
-                                if (deleteMode) {
-                                    e.stopPropagation();
-                                    var itemId = $(this).data('id');
-                                    
-                                    if (confirm('¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer.')) {
-                                        $.ajax({
-                                            url: ajaxurl,
-                                            type: 'POST',
-                                            data: {
-                                                action: 'uipsm_delete_menu_item',
-                                                nonce: '<?php echo wp_create_nonce('uipsm-admin'); ?>',
-                                                id: itemId
-                                            },
-                                            success: function(response) {
-                                                if (response.success) {
-                                                    // Solo eliminar este elemento del DOM
-                                                    $('.uipsm-menu-item[data-id="' + itemId + '"]').fadeOut(300, function() {
-                                                        $(this).remove();
-                                                        // Si no quedan elementos, recargar la página
-                                                        if ($('.uipsm-menu-item').length === 0) {
-                                                            location.reload();
-                                                        }
-                                                    });
-                                                } else {
-                                                    alert('Error al eliminar el elemento');
-                                                }
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-                        } else {
-                            // Desactivar modo eliminación
-                            deleteMode = false;
-                            $(this).text(uipsm.strings.start_delete_mode);
-                            $('#uipsm-menu-items').removeClass('uipsm-delete-mode');
-                            $(document).off('click', '.uipsm-delete-mode .uipsm-menu-item');
-                            
-                            // Recargar la página para asegurar consistencia
-                            location.reload();
-                        }
-                    });
-                    
-                    // Eliminar todos los elementos
-                    $('#uipsm-delete-all').on('click', function() {
-                        if (confirm(uipsm.strings.confirm_delete_all)) {
-                            // Mostrar indicador de carga
-                            var $button = $(this);
-                            var originalText = $button.text();
-                            $button.text('Eliminando...').prop('disabled', true);
-                            
-                            $.ajax({
-                                url: ajaxurl,
-                                type: 'POST',
-                                data: {
-                                    action: 'uipsm_delete_all_menu_items',
-                                    nonce: '<?php echo wp_create_nonce('uipsm-admin'); ?>',
-                                    menu_id: 'sidebar'
-                                },
-                                success: function(response) {
-                                    if (response.success) {
-                                        alert(uipsm.strings.delete_all_success);
-                                        location.reload();
-                                    } else {
-                                        $button.text(originalText).prop('disabled', false);
-                                        alert(response.data || uipsm.strings.delete_all_error);
-                                    }
-                                },
-                                error: function() {
-                                    $button.text(originalText).prop('disabled', false);
-                                    alert(uipsm.strings.delete_all_error);
-                                }
-                            });
-                        }
-                    });
-                    
-                    console.log('Eventos reforzados con script inline');
-                }, 1000);
-            });
-        </script>
         <?php
     }
 }
