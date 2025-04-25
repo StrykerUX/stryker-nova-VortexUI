@@ -1,13 +1,7 @@
 # Vortex UI Panel
 
-Versión 0.2.2
-
 Plugin de WordPress para crear paneles de administración personalizados con un menú lateral estilo SaaS moderno.
 
-## Características
+## Repositorio nuevo
 
-- Menú lateral personalizable
-- Iconos Tabler incluidos
-- Estructura modular
-- Fácil integración con temas personalizados
-- Perfecto para aplicaciones SaaS y paneles de administración personalizados
+Este repositorio ha sido reiniciado para comenzar desde cero con una nueva implementación.
