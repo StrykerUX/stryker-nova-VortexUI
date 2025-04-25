@@ -89,6 +89,15 @@ class UI_Panel_SaaS_Menu_Admin {
             UIPSM_VERSION . '.' . time()
         );
         
+        // Script de corrección de iconos - cargarlo primero
+        wp_enqueue_script(
+            'tabler-icons-fix',
+            UIPSM_PLUGIN_URL . 'assets/js/tabler-icons-fix.js',
+            array('jquery'),
+            UIPSM_VERSION . '.' . time(),
+            false // Cargar en el head para que se aplique lo antes posible
+        );
+        
         // JavaScript personalizado para administración
         wp_enqueue_script(
             'uipsm-admin',
@@ -102,7 +111,7 @@ class UI_Panel_SaaS_Menu_Admin {
         wp_enqueue_script(
             'tabler-icons-manager',
             UIPSM_PLUGIN_URL . 'assets/js/tabler-icons-manager.js',
-            array('jquery'),
+            array('jquery', 'tabler-icons-fix'),
             UIPSM_VERSION . '.' . time(),
             true
         );
@@ -290,7 +299,7 @@ class UI_Panel_SaaS_Menu_Admin {
                                 <li><?php _e('Para crear un submenú, selecciona un elemento padre en el formulario.', 'uipsm'); ?></li>
                                 <li><?php _e('Puedes restringir la visibilidad de los elementos según el rol del usuario.', 'uipsm'); ?></li>
                                 <li><?php _e('Utiliza iconos para mejorar la apariencia del menú.', 'uipsm'); ?></li>
-                                <li><?php _e('Si no ves iconos en la biblioteca, intenta recargar la página.', 'uipsm'); ?></li>
+                                <li><?php _e('Si no ves iconos en la biblioteca, prueba a recargar la página o usa el campo de búsqueda para filtrar.', 'uipsm'); ?></li>
                             </ul>
                         </div>
                     </div>
@@ -350,6 +359,16 @@ class UI_Panel_SaaS_Menu_Admin {
                     }
                 });
             });
+            
+            // Reintentar cargar iconos si no aparecen después de un tiempo
+            setTimeout(function() {
+                if ($('.uipsm-icons-grid').is(':empty') || $('.uipsm-icons-grid').html().includes('Cargando iconos')) {
+                    console.log('Forzando recarga de iconos desde el script inline');
+                    if (typeof window.TablerIconsManager !== 'undefined') {
+                        window.TablerIconsManager.initIconPicker();
+                    }
+                }
+            }, 1500);
         });
         </script>
         <?php
