@@ -1,39 +1,43 @@
-# Ignorar archivos y carpetas generados por el sistema operativo
+# Archivos y carpetas de sistema
 .DS_Store
 Thumbs.db
-
-# Ignorar archivos y carpetas generados por editores
-*.sublime-project
-*.sublime-workspace
 .idea/
 .vscode/
-*.swp
-*.swo
+*.sublime-project
+*.sublime-workspace
 
-# Ignorar archivos y carpetas de dependencias
+# Archivos y carpetas de WordPress
+wp-config.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/cache/
+wp-content/backups/
+
+# Archivos y carpetas de dependencias
 node_modules/
 vendor/
 composer.lock
-package-lock.json
 
-# Ignorar archivos generados por WordPress
-*.log
-wp-config.php
-wp-content/advanced-cache.php
-wp-content/backup-db/
-wp-content/backups/
-wp-content/blogs.dir/
-wp-content/cache/
-wp-content/upgrade/
-wp-content/uploads/
-wp-content/mu-plugins/
-
-# Ignorar archivos de construcción y compilación
+# Archivos y carpetas de compilación
 dist/
 build/
-release/
-*.zip
+.sass-cache/
+*.css.map
+*.js.map
 
-# Ignorar archivos temporales
-tmp/
-temp/
+# Archivos de ambiente local
+.env
+.env.*
+!.env.example
+
+# Archivos de log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Archivos zip (versiones empaquetadas del plugin)
+*.zip
