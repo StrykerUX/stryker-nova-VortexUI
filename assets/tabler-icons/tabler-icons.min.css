@@ -1,0 +1,111 @@
+/**
+ * Tabler Icons 2.20.0
+ * @license MIT
+ * Simplificado para Vortex UI Panel
+ */
+@font-face {
+  font-family: 'tabler-icons';
+  src: url('../fonts/tabler-icons.woff2?1234') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.ti {
+  font-family: 'tabler-icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Iconos básicos */
+.ti-home:before { content: "\ea01"; }
+.ti-dashboard:before { content: "\ea02"; }
+.ti-layout:before { content: "\ea03"; }
+.ti-settings:before { content: "\ea04"; }
+.ti-user:before { content: "\ea05"; }
+.ti-users:before { content: "\ea06"; }
+.ti-file:before { content: "\ea07"; }
+.ti-file-text:before { content: "\ea08"; }
+.ti-folder:before { content: "\ea09"; }
+.ti-bell:before { content: "\ea0a"; }
+.ti-alert-circle:before { content: "\ea0b"; }
+.ti-alert-triangle:before { content: "\ea0c"; }
+.ti-calendar:before { content: "\ea0d"; }
+.ti-chart-bar:before { content: "\ea0e"; }
+.ti-chart-line:before { content: "\ea0f"; }
+.ti-chart-pie:before { content: "\ea10"; }
+.ti-check:before { content: "\ea11"; }
+.ti-clipboard:before { content: "\ea12"; }
+.ti-code:before { content: "\ea13"; }
+.ti-compass:before { content: "\ea14"; }
+.ti-credit-card:before { content: "\ea15"; }
+.ti-database:before { content: "\ea16"; }
+.ti-device-desktop:before { content: "\ea17"; }
+.ti-device-mobile:before { content: "\ea18"; }
+.ti-device-tablet:before { content: "\ea19"; }
+.ti-download:before { content: "\ea1a"; }
+.ti-edit:before { content: "\ea1b"; }
+.ti-external-link:before { content: "\ea1c"; }
+.ti-eye:before { content: "\ea1d"; }
+.ti-eye-off:before { content: "\ea1e"; }
+.ti-file-download:before { content: "\ea1f"; }
+.ti-file-upload:before { content: "\ea20"; }
+.ti-filter:before { content: "\ea21"; }
+.ti-flag:before { content: "\ea22"; }
+.ti-globe:before { content: "\ea23"; }
+.ti-grid:before { content: "\ea24"; }
+.ti-heart:before { content: "\ea25"; }
+.ti-help:before { content: "\ea26"; }
+.ti-image:before { content: "\ea27"; }
+.ti-inbox:before { content: "\ea28"; }
+.ti-info-circle:before { content: "\ea29"; }
+.ti-link:before { content: "\ea2a"; }
+.ti-list:before { content: "\ea2b"; }
+.ti-lock:before { content: "\ea2c"; }
+.ti-log-out:before { content: "\ea2d"; }
+.ti-mail:before { content: "\ea2e"; }
+.ti-map:before { content: "\ea2f"; }
+.ti-map-pin:before { content: "\ea30"; }
+.ti-menu:before { content: "\ea31"; }
+.ti-message:before { content: "\ea32"; }
+.ti-minus:before { content: "\ea33"; }
+.ti-moon:before { content: "\ea34"; }
+.ti-news:before { content: "\ea35"; }
+.ti-notification:before { content: "\ea36"; }
+.ti-package:before { content: "\ea37"; }
+.ti-paperclip:before { content: "\ea38"; }
+.ti-pencil:before { content: "\ea39"; }
+.ti-phone:before { content: "\ea3a"; }
+.ti-photo:before { content: "\ea3b"; }
+.ti-plus:before { content: "\ea3c"; }
+.ti-power:before { content: "\ea3d"; }
+.ti-refresh:before { content: "\ea3e"; }
+.ti-search:before { content: "\ea3f"; }
+.ti-send:before { content: "\ea40"; }
+.ti-share:before { content: "\ea41"; }
+.ti-shopping-cart:before { content: "\ea42"; }
+.ti-star:before { content: "\ea43"; }
+.ti-sun:before { content: "\ea44"; }
+.ti-tag:before { content: "\ea45"; }
+.ti-trash:before { content: "\ea46"; }
+.ti-upload:before { content: "\ea47"; }
+.ti-user-check:before { content: "\ea48"; }
+.ti-user-plus:before { content: "\ea49"; }
+.ti-user-x:before { content: "\ea4a"; }
+.ti-video:before { content: "\ea4b"; }
+.ti-volume:before { content: "\ea4c"; }
+.ti-volume-2:before { content: "\ea4d"; }
+.ti-x:before { content: "\ea4e"; }
+.ti-zap:before { content: "\ea4f"; }
+.ti-zoom-in:before { content: "\ea50"; }
+.ti-zoom-out:before { content: "\ea51"; }
+.ti-chevron-left:before { content: "\ea52"; }
+.ti-chevron-right:before { content: "\ea53"; }
+.ti-chevron-up:before { content: "\ea54"; }
+.ti-chevron-down:before { content: "\ea55"; }
