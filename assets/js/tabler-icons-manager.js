@@ -23,11 +23,19 @@
             // Verificar si los iconos están cargados correctamente
             this.verifyIconsLoaded();
             
-            // Cargar dinámicamente los iconos desde el directorio assets/tabler-icons-outline
-            this.loadIconsFromDirectory();
-            
-            // Inicializar eventos relacionados con los iconos
-            this.initEvents();
+            // Verificar si debemos usar el escáner alternativo
+            if (typeof window.uipsm !== 'undefined' && window.uipsm.use_scanner === '1' && 
+                typeof window.TablerIconsScanner !== 'undefined') {
+                console.log('TablerIconsManager: Usando escáner de iconos alternativo...');
+                // El escáner se iniciará automáticamente y llamará a initIconPicker cuando termine
+                window.TablerIconsScanner.scan();
+            } else {
+                // Cargar dinámicamente los iconos desde el directorio assets/tabler-icons-outline
+                this.loadIconsFromDirectory();
+                
+                // Inicializar eventos relacionados con los iconos
+                this.initEvents();
+            }
             
             console.log('TablerIconsManager: Inicializado correctamente');
         },
@@ -130,6 +138,16 @@
                 self.loadBackupIconsList();
                 return;
             }
+            
+            // Intentar primero usar el escáner alternativo si está disponible
+            if (typeof window.TablerIconsScanner !== 'undefined') {
+                console.log('TablerIconsManager: Intentando usar el escáner alternativo...');
+                window.TablerIconsScanner.scan();
+                return;
+            }
+            
+            // Como fallback, usar AJAX para obtener los iconos
+            console.log('TablerIconsManager: Intentando cargar iconos mediante AJAX...');
             
             // Hacer una solicitud AJAX para escanear dinámicamente los archivos en la carpeta
             $.ajax({
@@ -290,47 +308,8 @@
          * Aplicar estilos adicionales para la nueva estructura de iconos
          */
         applyGridStyles: function() {
-            // Crear estilos dinámicos para las categorías
-            const categoryStyles = `
-                .uipsm-icon-category {
-                    margin: 15px 0 5px;
-                    padding-bottom: 5px;
-                    border-bottom: 1px solid #eee;
-                    color: #23282d;
-                    font-size: 14px;
-                }
-                
-                .uipsm-icons-category-grid {
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 8px;
-                    margin-bottom: 15px;
-                }
-                
-                .uipsm-icons-grid {
-                    max-height: 400px;
-                    overflow-y: auto;
-                    padding-right: 10px;
-                }
-                
-                /* Estilos para pantallas más grandes */
-                @media (min-width: 1200px) {
-                    .uipsm-icons-category-grid {
-                        grid-template-columns: repeat(4, 1fr);
-                    }
-                }
-                
-                @media (max-width: 782px) {
-                    .uipsm-icons-category-grid {
-                        grid-template-columns: repeat(2, 1fr);
-                    }
-                }
-            `;
-            
-            // Añadir estilos al DOM
-            if (!$('#tabler-icons-grid-styles').length) {
-                $('<style id="tabler-icons-grid-styles"></style>').html(categoryStyles).appendTo('head');
-            }
+            // Los estilos ahora están incluidos directamente en el HTML de la página
+            // Así que no necesitamos agregarlos dinámicamente
         },
         
         /**
