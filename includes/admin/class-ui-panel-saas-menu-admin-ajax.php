@@ -167,4 +167,37 @@ trait UI_Panel_SaaS_Menu_Admin_Ajax {
         
         wp_send_json_success();
     }
+
+    /**
+     * AJAX: Eliminar todos los elementos del menú
+     */
+    public function ajax_delete_all_menu_items() {
+        check_ajax_referer('uipsm-admin', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('No tienes permiso para realizar esta acción');
+        }
+        
+        $menu_id = isset($_POST['menu_id']) ? sanitize_text_field($_POST['menu_id']) : 'sidebar';
+        
+        global $wpdb;
+        $table_name = $wpdb->prefix . 'uipsm_menu_items';
+        
+        // Eliminar todos los elementos del menú
+        $result = $wpdb->query(
+            $wpdb->prepare(
+                "DELETE FROM $table_name WHERE menu_id = %s",
+                $menu_id
+            )
+        );
+        
+        if ($result === false) {
+            wp_send_json_error('Error al eliminar todos los elementos: ' . $wpdb->last_error);
+        }
+        
+        wp_send_json_success(array(
+            'message' => 'Todos los elementos han sido eliminados correctamente',
+            'count' => $result
+        ));
+    }
 }
