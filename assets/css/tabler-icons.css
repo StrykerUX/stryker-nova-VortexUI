@@ -1,0 +1,162 @@
+/**
+ * Tabler Icons CSS
+ * Versión personalizada para el plugin StrykerNova VortexUI
+ */
+
+@font-face {
+  font-family: 'TablerIcons';
+  src: url('../tabler-icons-font/tabler-icons.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+.ti {
+  font-family: 'TablerIcons' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  
+  /* Better Font Rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* CSS alternativo para usar iconos SVG directamente */
+.ti-svg {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  stroke-width: 0;
+  stroke: currentColor;
+  fill: currentColor;
+  vertical-align: -0.125em;
+}
+
+/* Definiciones específicas para iconos SVG */
+.ti-dashboard::before {
+  content: "";
+  background-image: url('../tabler-icons-outline/dashboard.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  background-size: cover;
+}
+
+.ti-home::before {
+  content: "";
+  background-image: url('../tabler-icons-outline/home.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  background-size: cover;
+}
+
+.ti-settings::before {
+  content: "";
+  background-image: url('../tabler-icons-outline/settings.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  background-size: cover;
+}
+
+.ti-user::before {
+  content: "";
+  background-image: url('../tabler-icons-outline/user.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  background-size: cover;
+}
+
+.ti-users::before {
+  content: "";
+  background-image: url('../tabler-icons-outline/users.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  background-size: cover;
+}
+
+.ti-message::before {
+  content: "";
+  background-image: url('../tabler-icons-outline/message.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: middle;
+  background-size: cover;
+}
+
+/* Ajuste para tamaños de iconos */
+.ti-sm {
+  font-size: 0.875em;
+}
+
+.ti-lg {
+  font-size: 1.33333em;
+  line-height: 0.75em;
+  vertical-align: -0.0667em;
+}
+
+.ti-xl {
+  font-size: 1.5em;
+  line-height: 0.75em;
+  vertical-align: -0.125em;
+}
+
+.ti-2x {
+  font-size: 2em;
+}
+
+.ti-3x {
+  font-size: 3em;
+}
+
+.ti-4x {
+  font-size: 4em;
+}
+
+.ti-5x {
+  font-size: 5em;
+}
+
+/* Animaciones */
+.ti-spin {
+  animation: ti-spin 2s infinite linear;
+}
+
+@keyframes ti-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Ajuste de colores usando currentColor */
+.ti {
+  color: inherit;
+}
