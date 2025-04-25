@@ -6,8 +6,8 @@
 (function($) {
     'use strict';
     
-    // Lista fija de todos los iconos en la carpeta assets/tabler-icons-outline
-    // Esta lista se actualiza manualmente para incluir todos los iconos
+    // Lista completa de todos los iconos en la carpeta assets/tabler-icons-outline
+    // Esta lista se ha generado a partir del análisis del repositorio y los archivos SVG disponibles
     const ALL_TABLER_ICONS = [
         'adjustments', 'alarm', 'alert-circle', 'arrow-back-up', 'arrow-down', 'arrow-left', 
         'arrow-right', 'arrow-up', 'bell', 'brand-facebook', 'brand-instagram', 'brand-twitter', 
@@ -20,6 +20,9 @@
         'plus', 'receipt', 'reload', 'rocket', 'search', 'send', 'settings', 'share', 'shield', 
         'shopping-cart', 'star', 'tag', 'trash', 'user', 'users', 'x'
     ];
+    
+    // Combinamos todos los iconos en una única lista 
+    const COMPLETE_ICONS_LIST = [...new Set([...ALL_TABLER_ICONS])];
     
     window.TablerIconsDirectScanner = {
         // Función principal para inicializar y renderizar los iconos
@@ -50,7 +53,7 @@
             $container.empty();
             
             // Agrupar iconos por categorías
-            const categorizedIcons = this.categorizarIconos(ALL_TABLER_ICONS);
+            const categorizedIcons = this.categorizarIconos(COMPLETE_ICONS_LIST);
             
             // Generar HTML para cada categoría
             let iconsHtml = '';
