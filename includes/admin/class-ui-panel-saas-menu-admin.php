@@ -75,7 +75,7 @@ class UI_Panel_SaaS_Menu_Admin {
         // JavaScript personalizado para administración
         wp_enqueue_script(
             'uipsm-admin',
-            UIPSM_PLUGIN_URL . 'assets/js/admin.js',
+            UIPSM_PLUGIN_URL . 'assets/js/admin-fix.js', // Cambiado a admin-fix.js
             array('jquery', 'jquery-ui-sortable'),
             UIPSM_VERSION,
             true
