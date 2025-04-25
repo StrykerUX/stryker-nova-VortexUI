@@ -43,6 +43,9 @@ class UI_Panel_SaaS_Menu_Admin {
         add_action('wp_ajax_uipsm_get_menu_items', array($this, 'ajax_get_menu_items'));
         add_action('wp_ajax_uipsm_delete_menu_item', array($this, 'ajax_delete_menu_item'));
         add_action('wp_ajax_uipsm_delete_all_menu_items', array($this, 'ajax_delete_all_menu_items'));
+        
+        // Nuevo endpoint AJAX para obtener iconos
+        add_action('wp_ajax_uipsm_get_tabler_icons', array($this, 'ajax_get_tabler_icons'));
     }
     
     /**
@@ -140,6 +143,9 @@ class UI_Panel_SaaS_Menu_Admin {
                 'start_delete_mode' => __('Eliminar elementos uno por uno', 'uipsm'),
                 'end_delete_mode' => __('Finalizar eliminación', 'uipsm'),
                 'delete_all' => __('Eliminar todos los elementos', 'uipsm'),
+                'loading_icons' => __('Cargando iconos...', 'uipsm'),
+                'icons_loaded' => __('Iconos cargados correctamente', 'uipsm'),
+                'icons_error' => __('Error al cargar los iconos', 'uipsm'),
             ),
         ));
     }
@@ -341,6 +347,8 @@ class UI_Panel_SaaS_Menu_Admin {
         /* Mejora visual para la cuadrícula de iconos */
         .uipsm-icons-grid {
             max-height: 300px;
+            overflow-y: auto;
+            padding-right: 10px;
         }
         </style>
         
