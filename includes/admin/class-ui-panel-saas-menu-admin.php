@@ -73,15 +73,6 @@ class UI_Panel_SaaS_Menu_Admin {
         // jQuery UI para ordenamiento
         wp_enqueue_script('jquery-ui-sortable');
         
-        // JavaScript personalizado para administración
-        wp_enqueue_script(
-            'uipsm-admin',
-            UIPSM_PLUGIN_URL . 'assets/js/admin-fix-enhanced.js', // Cambiado a la versión mejorada
-            array('jquery', 'jquery-ui-sortable'),
-            UIPSM_VERSION . '.' . time(), // Añadido timestamp para evitar caché
-            true
-        );
-        
         // CSS personalizado para administración
         wp_enqueue_style(
             'uipsm-admin',
@@ -90,12 +81,21 @@ class UI_Panel_SaaS_Menu_Admin {
             UIPSM_VERSION . '.' . time()
         );
         
-        // Cargar CSS local de Tabler Icons
+        // Cargar CSS de Tabler Icons
         wp_enqueue_style(
             'tabler-icons',
             UIPSM_PLUGIN_URL . 'assets/css/tabler-icons.css',
             array(),
             UIPSM_VERSION . '.' . time()
+        );
+        
+        // JavaScript personalizado para administración
+        wp_enqueue_script(
+            'uipsm-admin',
+            UIPSM_PLUGIN_URL . 'assets/js/admin-fix-enhanced.js',
+            array('jquery', 'jquery-ui-sortable'),
+            UIPSM_VERSION . '.' . time(),
+            true
         );
         
         // Cargar gestor de iconos
@@ -177,11 +177,13 @@ class UI_Panel_SaaS_Menu_Admin {
                             
                             <div class="uipsm-form-group">
                                 <label for="uipsm-item-icon"><?php _e('Icono', 'uipsm'); ?></label>
-                                <input type="text" id="uipsm-item-icon" name="icon" placeholder="ti-dashboard">
-                                <small><?php _e('Usa clases de Tabler Icons, por ejemplo: ti-dashboard, ti-settings', 'uipsm'); ?></small>
-                                <div class="uipsm-icon-preview">
-                                    <i class="ti ti-dashboard"></i>
+                                <div class="uipsm-icon-field">
+                                    <input type="text" id="uipsm-item-icon" name="icon" placeholder="ti-dashboard">
+                                    <div class="uipsm-icon-preview">
+                                        <i class="ti ti-dashboard"></i>
+                                    </div>
                                 </div>
+                                <small><?php _e('Selecciona un icono de la biblioteca de abajo o escribe manualmente un código de icono.', 'uipsm'); ?></small>
                             </div>
                             
                             <div class="uipsm-form-group">
@@ -216,12 +218,18 @@ class UI_Panel_SaaS_Menu_Admin {
                     
                     <div class="uipsm-panel">
                         <h2><?php _e('Biblioteca de iconos', 'uipsm'); ?></h2>
+                        
+                        <div class="uipsm-icon-search">
+                            <input type="text" id="uipsm-icon-search" placeholder="Buscar iconos...">
+                        </div>
+                        
                         <div class="uipsm-icons-grid">
+                            <p class="uipsm-loading"><?php _e('Cargando iconos...', 'uipsm'); ?></p>
                             <!-- La cuadrícula de iconos se generará dinámicamente con JavaScript -->
                         </div>
+                        
                         <p class="uipsm-icon-help">
-                            <?php _e('Haz clic en un icono para seleccionarlo. Para ver todos los iconos disponibles, visita', 'uipsm'); ?>
-                            <a href="https://tabler-icons.io/" target="_blank"><?php _e('Tabler Icons', 'uipsm'); ?></a>
+                            <?php _e('Haz clic en un icono para seleccionarlo. Los iconos se mostrarán en el menú lateral.', 'uipsm'); ?>
                         </p>
                     </div>
                 </div>
@@ -263,6 +271,7 @@ class UI_Panel_SaaS_Menu_Admin {
                             <h3><?php _e('Cómo usar', 'uipsm'); ?></h3>
                             <ol>
                                 <li><?php _e('Utiliza el formulario de la izquierda para añadir nuevos elementos al menú.', 'uipsm'); ?></li>
+                                <li><?php _e('Selecciona un icono haciendo clic en la biblioteca de iconos.', 'uipsm'); ?></li>
                                 <li><?php _e('Arrastra y suelta los elementos para cambiar su orden.', 'uipsm'); ?></li>
                                 <li><?php _e('Haz clic en el botón "Eliminar" junto a cada elemento para eliminarlo individualmente.', 'uipsm'); ?></li>
                                 <li><?php _e('Utiliza "Eliminar elementos uno por uno" para entrar en un modo de eliminación rápida.', 'uipsm'); ?></li>
@@ -281,12 +290,68 @@ class UI_Panel_SaaS_Menu_Admin {
                                 <li><?php _e('Para crear un submenú, selecciona un elemento padre en el formulario.', 'uipsm'); ?></li>
                                 <li><?php _e('Puedes restringir la visibilidad de los elementos según el rol del usuario.', 'uipsm'); ?></li>
                                 <li><?php _e('Utiliza iconos para mejorar la apariencia del menú.', 'uipsm'); ?></li>
+                                <li><?php _e('Si no ves iconos en la biblioteca, intenta recargar la página.', 'uipsm'); ?></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <style>
+        /* Estilos adicionales para el campo de icono */
+        .uipsm-icon-field {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .uipsm-icon-preview {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f6f7f7;
+            border-radius: 4px;
+            font-size: 24px;
+            border: 1px solid #ddd;
+        }
+        
+        .uipsm-icon-search {
+            margin-bottom: 15px;
+        }
+        
+        .uipsm-icon-search input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        /* Mejora visual para la cuadrícula de iconos */
+        .uipsm-icons-grid {
+            max-height: 300px;
+        }
+        </style>
+        
+        <script>
+        jQuery(document).ready(function($) {
+            // Función para buscar iconos
+            $('#uipsm-icon-search').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                
+                $('.uipsm-icon-item').each(function() {
+                    const iconName = $(this).data('icon').toLowerCase();
+                    if (iconName.includes(searchTerm)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+        </script>
         <?php
     }
 }
