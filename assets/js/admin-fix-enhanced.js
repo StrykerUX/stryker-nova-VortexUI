@@ -39,8 +39,8 @@
         // Vista previa del icono
         $('#uipsm-item-icon').off('input').on('input', updateIconPreview);
         
-        // Selección de icono desde la biblioteca
-        $('.uipsm-icon-item').off('click').on('click', selectIcon);
+        // Selección de icono desde la biblioteca - usando delegación de eventos
+        $(document).off('click', '.uipsm-icon-item').on('click', '.uipsm-icon-item', selectIcon);
         
         // Botón de guardar menú completo
         $('#uipsm-save-menu').off('click').on('click', saveEntireMenu);
@@ -256,6 +256,9 @@
         if (item.menu_type === 'link' && !item.url) {
             item.url = '#';
         }
+
+        // Añadir mensaje de depuración
+        console.log('Enviando item al servidor:', item);
         
         // Guardar elemento
         $.ajax({
@@ -268,6 +271,9 @@
             },
             success: function(response) {
                 if (response.success) {
+                    // Mostrar la respuesta del servidor para depuración
+                    console.log('Respuesta del servidor:', response.data);
+                    
                     // Actualizar elemento en el array local o añadir nuevo
                     var found = false;
                     menuItems.forEach(function(existingItem, index) {
@@ -504,6 +510,7 @@
      */
     function selectIcon() {
         var iconClass = $(this).data('icon');
+        console.log('Icono seleccionado:', iconClass);
         $('#uipsm-item-icon').val(iconClass);
         updateIconPreview();
         
