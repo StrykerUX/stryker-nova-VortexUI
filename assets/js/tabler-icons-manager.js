@@ -124,13 +124,20 @@
         loadIconsFromDirectory: function() {
             const self = this;
             
+            // Verificar que tenemos acceso a la variable uipsm
+            if (typeof window.uipsm === 'undefined') {
+                console.error('TablerIconsManager: Variable uipsm no definida. Cargando lista de respaldo...');
+                self.loadBackupIconsList();
+                return;
+            }
+            
             // Hacer una solicitud AJAX para escanear dinámicamente los archivos en la carpeta
             $.ajax({
-                url: ajaxurl,
+                url: window.uipsm.ajaxurl,
                 type: 'POST',
                 data: {
                     action: 'uipsm_get_tabler_icons',
-                    nonce: uipsm.nonce
+                    nonce: window.uipsm.nonce
                 },
                 success: function(response) {
                     if (response.success && response.data) {
@@ -201,7 +208,9 @@
             this.availableIcons.sort();
             
             // Agrupar los iconos por categorías (si el nombre contiene guiones)
-            const categorizedIcons = {};
+            const categorizedIcons = {
+                'General': []
+            };
             
             this.availableIcons.forEach(function(icon) {
                 let category = 'General';
@@ -231,6 +240,10 @@
             
             // Generar HTML para cada categoría
             Object.keys(categorizedIcons).sort().forEach(function(category) {
+                if (categorizedIcons[category].length === 0) {
+                    return; // Saltar categorías vacías
+                }
+                
                 iconsHtml += '<h4 class="uipsm-icon-category">' + category + ' (' + categorizedIcons[category].length + ')</h4>';
                 iconsHtml += '<div class="uipsm-icons-category-grid">';
                 
