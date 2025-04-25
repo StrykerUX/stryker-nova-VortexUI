@@ -11,10 +11,15 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Incluir trait con métodos AJAX
+require_once UIPSM_PLUGIN_DIR . 'includes/admin/class-ui-panel-saas-menu-admin-ajax.php';
+
 /**
  * Clase de administración del plugin
  */
 class UI_Panel_SaaS_Menu_Admin {
+    // Usar trait con métodos AJAX
+    use UI_Panel_SaaS_Menu_Admin_Ajax;
     
     /**
      * Constructor
@@ -281,3 +286,4 @@ class UI_Panel_SaaS_Menu_Admin {
         </div>
         <?php
     }
+}
