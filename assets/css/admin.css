@@ -1,0 +1,367 @@
+/**
+ * Estilos de administración para UI Panel SaaS Menu Manager
+ */
+
+/* Contenedor principal */
+.uipsm-admin-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.uipsm-sidebar {
+    flex: 0 0 350px;
+}
+
+.uipsm-main {
+    flex: 1;
+    min-width: 500px;
+}
+
+/* Paneles */
+.uipsm-panel {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.uipsm-panel h2 {
+    margin-top: 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* Formulario */
+.uipsm-form-group {
+    margin-bottom: 15px;
+}
+
+.uipsm-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.uipsm-form-group input[type="text"],
+.uipsm-form-group select {
+    width: 100%;
+    max-width: 100%;
+}
+
+.uipsm-form-group small {
+    display: block;
+    color: #777;
+    margin-top: 3px;
+    font-style: italic;
+}
+
+.uipsm-form-actions {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+/* Biblioteca de iconos */
+.uipsm-icons-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.uipsm-icon-item {
+    text-align: center;
+    cursor: pointer;
+    padding: 8px 5px;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.uipsm-icon-item:hover {
+    background-color: #f6f7f7;
+}
+
+.uipsm-icon-item i {
+    font-size: 20px;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.uipsm-icon-item span {
+    font-size: 9px;
+    display: block;
+    color: #777;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.uipsm-icon-help {
+    margin-top: 15px;
+    font-style: italic;
+}
+
+.uipsm-icon-preview {
+    margin-top: 8px;
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f6f7f7;
+    border-radius: 4px;
+}
+
+/* Menú */
+.uipsm-menu-container {
+    margin-top: 15px;
+}
+
+.uipsm-sortable-menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.uipsm-sortable-menu ul {
+    margin-left: 30px;
+    padding: 0;
+    list-style: none;
+}
+
+.uipsm-menu-item {
+    margin-bottom: 5px;
+}
+
+.uipsm-menu-handle {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    cursor: move;
+    transition: all 0.2s;
+}
+
+.uipsm-menu-handle:hover {
+    background: #f1f1f1;
+}
+
+.uipsm-menu-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+}
+
+.uipsm-menu-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.uipsm-menu-info i {
+    font-size: 18px;
+    color: #555;
+    width: 20px;
+    text-align: center;
+}
+
+.uipsm-menu-title {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.uipsm-menu-type {
+    background: #e5f5ff;
+    color: #0071a1;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.uipsm-menu-url {
+    color: #999;
+    font-size: 12px;
+    margin-left: 10px;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.uipsm-menu-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.uipsm-menu-controls button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 3px;
+    color: #555;
+}
+
+.uipsm-menu-controls button:hover {
+    background: #eee;
+}
+
+.uipsm-menu-edit .dashicons {
+    color: #007cba;
+}
+
+.uipsm-menu-delete .dashicons {
+    color: #cc1818;
+}
+
+.uipsm-sortable-placeholder {
+    border: 1px dashed #bbb;
+    background: #f8f8f8;
+    height: 42px;
+    margin-bottom: 5px;
+    border-radius: 3px;
+}
+
+.uipsm-menu-actions {
+    margin-top: 20px;
+}
+
+.uipsm-empty-menu {
+    padding: 20px;
+    text-align: center;
+    background: #f8f8f8;
+    border: 1px dashed #ddd;
+    border-radius: 4px;
+    color: #777;
+}
+
+.uipsm-loading {
+    padding: 20px;
+    text-align: center;
+    color: #777;
+}
+
+/* Vista previa */
+.uipsm-preview {
+    margin-top: 15px;
+    padding: 0;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #f5f6fa;
+}
+
+.uipsm-preview-sidebar {
+    width: 250px;
+    height: 400px;
+    overflow-y: auto;
+    background: #313a46;
+    color: #ffffff;
+    padding: 15px 0;
+}
+
+/* Estilos para el menú en la vista previa */
+.uipsm-preview-sidebar .side-nav {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.uipsm-preview-sidebar .side-nav-item {
+    position: relative;
+}
+
+.uipsm-preview-sidebar .side-nav-title {
+    padding: 12px 20px 6px;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #8391a2;
+    font-weight: 600;
+    margin: 0;
+}
+
+.uipsm-preview-sidebar .side-nav-link {
+    padding: 10px 20px;
+    color: #8391a2;
+    display: flex;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.uipsm-preview-sidebar .side-nav-link:hover {
+    color: #bccee4;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.uipsm-preview-sidebar .menu-icon {
+    width: 24px;
+    display: inline-block;
+    margin-right: 10px;
+    text-align: center;
+}
+
+.uipsm-preview-sidebar .menu-arrow {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.uipsm-preview-sidebar .menu-arrow:before {
+    content: "\003E";
+    font-size: 12px;
+    display: block;
+    transform: rotate(90deg);
+    transition: all 0.3s;
+}
+
+.uipsm-preview-sidebar .side-nav-second-level,
+.uipsm-preview-sidebar .side-nav-third-level {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.uipsm-preview-sidebar .side-nav-second-level {
+    padding-left: 35px;
+}
+
+.uipsm-preview-sidebar .side-nav-third-level {
+    padding-left: 20px;
+}
+
+/* Instrucciones */
+.uipsm-instructions {
+    margin-top: 15px;
+}
+
+.uipsm-instructions h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.uipsm-instructions ul,
+.uipsm-instructions ol {
+    margin-left: 20px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .uipsm-sidebar,
+    .uipsm-main {
+        flex: 0 0 100%;
+    }
+}
