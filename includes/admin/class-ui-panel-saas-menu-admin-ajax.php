@@ -187,14 +187,40 @@ trait UI_Panel_SaaS_Menu_Admin_Ajax {
      * Obtener lista de iconos Tabler disponibles
      */
     public function ajax_get_tabler_icons() {
-        // Verificar nonce
-        if (!isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'uipsm-admin')) {
-            wp_send_json_error('Nonce inválido');
+        // Para este endpoint específico, permitimos verificación más flexible del nonce
+        $valid_nonce = false;
+        
+        // Verificar el nonce en $_POST primero
+        if (isset($_POST['nonce']) && wp_verify_nonce($_POST['nonce'], 'uipsm-admin')) {
+            $valid_nonce = true;
+        }
+        
+        // Si no se encuentra en $_POST, verificar en $_REQUEST
+        if (!$valid_nonce && isset($_REQUEST['nonce']) && wp_verify_nonce($_REQUEST['nonce'], 'uipsm-admin')) {
+            $valid_nonce = true;
+        }
+        
+        // Si tampoco está en $_REQUEST, verificar el referer
+        if (!$valid_nonce) {
+            $valid_nonce = check_ajax_referer('uipsm-admin', false, false);
+        }
+        
+        // Si el nonce no es válido
+        if (!$valid_nonce) {
+            // Log para depuración
+            error_log('TablerIconsManager: Nonce inválido');
+            if (isset($_POST['nonce'])) {
+                error_log('TablerIconsManager: Nonce enviado: ' . $_POST['nonce']);
+            }
+            
+            wp_send_json_error(array(
+                'message' => 'Nonce inválido. Por favor, recarga la página y vuelve a intentarlo.'
+            ));
             exit;
         }
         
-        // Verificar permiso
-        if (!current_user_can('manage_options')) {
+        // Verificar permiso (más flexible aquí)
+        if (!current_user_can('edit_posts') && !current_user_can('manage_options')) {
             wp_send_json_error('No tienes permisos para realizar esta acción');
             exit;
         }
