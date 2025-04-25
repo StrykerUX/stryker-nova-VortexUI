@@ -10,35 +10,50 @@
     window.TablerIconsManager = {
         /**
          * Lista de iconos disponibles
-         * Esta lista se expande con iconos de la documentación oficial de Tabler Icons
+         * Esta lista se corresponde con los iconos disponibles en el directorio assets/tabler-icons-outline
          */
         availableIcons: [
-            // Iconos básicos
-            'dashboard', 'home', 'settings', 'user', 'users', 'message',
-            // Navegación
-            'menu', 'menu-2', 'layout-dashboard', 'apps', 'browser',
-            // Interfaz
-            'checkbox', 'circle-check', 'circle-x', 'alert-circle', 'info-circle', 
-            'help', 'alert-triangle', 'bell', 'calendar', 'search',
-            // Comunicación
-            'mail', 'send', 'phone', 'message-circle', 'messages', 'chat',
-            // Acciones
-            'plus', 'minus', 'x', 'check', 'edit', 'pencil', 'trash', 'download', 'upload',
-            // Datos
-            'file', 'files', 'folder', 'clipboard', 'book', 'books', 'list',
-            // Usuario
-            'user-circle', 'user-plus', 'user-minus', 'user-check', 'user-x', 'users-group',
+            // Navegación y UI básica
+            'home', 'dashboard', 'layout', 'layout-dashboard', 'layout-grid', 'menu', 'search', 
+            'settings', 'chevron-down', 'chevron-up', 'chevron-left', 'chevron-right',
+            'arrow-left', 'arrow-right', 'arrow-up', 'arrow-down', 'arrow-back-up',
+            
+            // Controles e interfaces
+            'plus', 'minus', 'check', 'x', 'edit', 'trash', 'adjustments', 'reload', 'filter',
+            'checkbox', 'eye', 'eye-off', 'share', 'download', 'circle-check', 'circle-x',
+            
+            // Comunicación y mensajería
+            'mail', 'message', 'bell', 'notification', 'send', 'phone',
+            
+            // Documentos y archivos
+            'file', 'folder', 'clipboard', 'tag', 'receipt', 'list',
+            
+            // Dispositivos y hardware
+            'device-mobile', 'device-laptop', 'browser', 'cpu', 'database',
+            
+            // Finanzas y comercio
+            'cash', 'coin', 'credit-card', 'shopping-cart',
+            
+            // Medidas y tiempo
+            'calendar', 'clock', 'alarm',
+            
+            // Visualización de datos
+            'chart-bar', 'chart-line',
+            
+            // Multimedia y elementos visuales
+            'photo', 'map', 'map-pin',
+            
+            // Usuarios y seguridad
+            'user', 'users', 'lock', 'shield',
+            
             // Redes sociales
-            'brand-facebook', 'brand-twitter', 'brand-instagram', 'brand-youtube', 'brand-github',
-            // Dispositivos
-            'device-mobile', 'device-tablet', 'device-laptop', 'device-desktop', 'printer',
-            // Funciones
-            'chart-bar', 'chart-pie', 'chart-line', 'graph', 'report', 'calculator',
-            // Finanzas
-            'cash', 'credit-card', 'coin', 'currency-dollar', 'receipt',
+            'brand-facebook', 'brand-twitter', 'brand-instagram',
+            
+            // Notificaciones e información
+            'alert-circle', 'info-circle', 'help',
+            
             // Varios
-            'heart', 'star', 'map', 'pin', 'clock', 'eye', 'camera', 'photo', 'palette',
-            'bulb', 'music', 'video', 'microphone', 'puzzle', 'trophy', 'flag'
+            'heart', 'star', 'rocket', 'briefcase', 'restore', 'spaces'
         ],
         
         /**
@@ -83,50 +98,56 @@
             // Añadir estilos críticos directamente al DOM para que los iconos se muestren
             const criticalStyles = `
                 .ti {
-                    display: inline-block;
-                    width: 1em;
-                    height: 1em;
-                    vertical-align: middle;
-                    color: currentColor;
-                    position: relative;
+                    display: inline-block !important;
+                    width: 1em !important;
+                    height: 1em !important;
+                    vertical-align: -0.125em !important;
+                    color: currentColor !important;
+                    position: relative !important;
                 }
+                
                 .ti::before {
-                    content: '';
-                    display: inline-block;
-                    width: 1em;
-                    height: 1em;
-                    background-color: currentColor;
-                    -webkit-mask-size: cover;
-                    mask-size: cover;
-                    -webkit-mask-repeat: no-repeat;
-                    mask-repeat: no-repeat;
-                    -webkit-mask-position: center;
-                    mask-position: center;
+                    content: '' !important;
+                    display: inline-block !important;
+                    width: 1em !important;
+                    height: 1em !important;
+                    background-color: currentColor !important;
+                    -webkit-mask-size: cover !important;
+                    mask-size: cover !important;
+                    -webkit-mask-repeat: no-repeat !important;
+                    mask-repeat: no-repeat !important;
+                    -webkit-mask-position: center !important;
+                    mask-position: center !important;
                 }
+                
                 .uipsm-icon-item {
-                    cursor: pointer;
-                    padding: 10px;
-                    text-align: center;
-                    border: 1px solid #f0f0f0;
-                    border-radius: 4px;
-                    transition: all 0.2s;
+                    cursor: pointer !important;
+                    padding: 8px 5px !important;
+                    text-align: center !important;
+                    border: 1px solid #f0f0f0 !important;
+                    border-radius: 4px !important;
+                    transition: all 0.2s !important;
                 }
+                
                 .uipsm-icon-item:hover {
-                    background-color: #f6f7f7;
-                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                    background-color: #f6f7f7 !important;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
                 }
+                
                 .uipsm-icon-item i {
-                    font-size: 24px;
-                    margin-bottom: 8px;
-                    display: block;
+                    font-size: 24px !important;
+                    display: block !important;
+                    margin-bottom: 5px !important;
+                    color: #444 !important;
                 }
+                
                 .uipsm-icon-item span {
-                    font-size: 10px;
-                    display: block;
-                    color: #666;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
+                    font-size: 9px !important;
+                    display: block !important;
+                    color: #777 !important;
+                    white-space: nowrap !important;
+                    overflow: hidden !important;
+                    text-overflow: ellipsis !important;
                 }
             `;
             
@@ -154,6 +175,7 @@
             
             // Construir la cuadrícula de iconos
             let iconsHtml = '';
+            const self = this;
             
             this.availableIcons.forEach(function(icon) {
                 iconsHtml += '<div class="uipsm-icon-item" data-icon="ti-' + icon + '">' +
@@ -180,9 +202,32 @@
                 });
                 
                 console.log('TablerIconsManager: Selector de iconos inicializado con ' + this.availableIcons.length + ' iconos');
+                
+                // Inicializar buscador de iconos
+                this.initIconSearch();
             } else {
                 console.error('TablerIconsManager: No se encontró el contenedor .uipsm-icons-grid');
             }
+        },
+        
+        /**
+         * Inicializar búsqueda de iconos
+         */
+        initIconSearch: function() {
+            $('#uipsm-icon-search').off('input').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                
+                $('.uipsm-icon-item').each(function() {
+                    const iconName = $(this).data('icon').toLowerCase();
+                    if (iconName.includes(searchTerm)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+            
+            console.log('TablerIconsManager: Búsqueda de iconos inicializada');
         },
         
         /**
