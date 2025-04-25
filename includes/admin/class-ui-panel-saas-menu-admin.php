@@ -89,18 +89,28 @@ class UI_Panel_SaaS_Menu_Admin {
             UIPSM_VERSION
         );
         
-        // Iconos de Tabler (para la vista previa y selección)
+        // Cargar CSS local de Tabler Icons
         wp_enqueue_style(
             'tabler-icons',
-            'https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css',
+            UIPSM_PLUGIN_URL . 'assets/css/tabler-icons.css',
             array(),
-            '2.44.0'
+            UIPSM_VERSION
+        );
+        
+        // Cargar gestor de iconos
+        wp_enqueue_script(
+            'tabler-icons-manager',
+            UIPSM_PLUGIN_URL . 'assets/js/tabler-icons-manager.js',
+            array('jquery'),
+            UIPSM_VERSION,
+            true
         );
         
         // Localizar script
         wp_localize_script('uipsm-admin', 'uipsm', array(
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('uipsm-admin'),
+            'plugin_url' => UIPSM_PLUGIN_URL,
             'strings' => array(
                 'confirm_delete' => __('¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer.', 'uipsm'),
                 'save_success' => __('Menú guardado correctamente', 'uipsm'),
@@ -197,27 +207,7 @@ class UI_Panel_SaaS_Menu_Admin {
                     <div class="uipsm-panel">
                         <h2><?php _e('Biblioteca de iconos', 'uipsm'); ?></h2>
                         <div class="uipsm-icons-grid">
-                            <?php
-                            // Lista de iconos populares
-                            $popular_icons = array(
-                                'ti-dashboard', 'ti-home', 'ti-settings', 'ti-user',
-                                'ti-users', 'ti-message', 'ti-mail', 'ti-bell',
-                                'ti-calendar', 'ti-file', 'ti-folder', 'ti-image',
-                                'ti-chart-line', 'ti-chart-bar', 'ti-chart-pie', 'ti-chart-area',
-                                'ti-star', 'ti-heart', 'ti-bookmark', 'ti-flag',
-                                'ti-map', 'ti-compass', 'ti-pin', 'ti-target',
-                                'ti-link', 'ti-search', 'ti-eye', 'ti-trash',
-                                'ti-pencil', 'ti-plus', 'ti-minus', 'ti-x',
-                                'ti-check', 'ti-arrow-up', 'ti-arrow-down', 'ti-arrow-left',
-                            );
-                            
-                            foreach ($popular_icons as $icon) {
-                                echo '<div class="uipsm-icon-item" data-icon="' . esc_attr($icon) . '">';
-                                echo '<i class="' . esc_attr($icon) . '"></i>';
-                                echo '<span>' . esc_html($icon) . '</span>';
-                                echo '</div>';
-                            }
-                            ?>
+                            <!-- La cuadrícula de iconos se generará dinámicamente con JavaScript -->
                         </div>
                         <p class="uipsm-icon-help">
                             <?php _e('Haz clic en un icono para seleccionarlo. Para ver todos los iconos disponibles, visita', 'uipsm'); ?>
