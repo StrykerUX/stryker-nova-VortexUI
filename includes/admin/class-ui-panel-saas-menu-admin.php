@@ -101,10 +101,10 @@ class UI_Panel_SaaS_Menu_Admin {
             false // Cargar en el head para que se aplique lo antes posible
         );
         
-        // Cargar escáner directo de iconos (sin AJAX)
+        // Cargar nuestra solución simplificada para los iconos
         wp_enqueue_script(
-            'tabler-icons-direct-scanner',
-            UIPSM_PLUGIN_URL . 'assets/js/tabler-icons-direct-scanner.js',
+            'icons-fix',
+            UIPSM_PLUGIN_URL . 'assets/js/icons-fix.js',
             array('jquery'),
             UIPSM_VERSION . '.' . time(),
             true
@@ -114,7 +114,7 @@ class UI_Panel_SaaS_Menu_Admin {
         wp_enqueue_script(
             'uipsm-admin',
             UIPSM_PLUGIN_URL . 'assets/js/admin-fix-enhanced.js',
-            array('jquery', 'jquery-ui-sortable'),
+            array('jquery', 'jquery-ui-sortable', 'icons-fix'),
             UIPSM_VERSION . '.' . time(),
             true
         );
@@ -127,7 +127,7 @@ class UI_Panel_SaaS_Menu_Admin {
             'version' => UIPSM_VERSION,
             'debug' => WP_DEBUG ? '1' : '0',
             'icons_dir' => 'assets/tabler-icons-outline/',
-            'use_direct_scanner' => '1', // Usar el escáner directo sin AJAX
+            'use_icons_fix' => '1', // Usar la solución simplificada
             'strings' => array(
                 'confirm_delete' => __('¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer.', 'uipsm'),
                 'confirm_delete_all' => __('¿Estás seguro de que deseas eliminar TODOS los elementos del menú? Esta acción no se puede deshacer.', 'uipsm'),
@@ -306,123 +306,13 @@ class UI_Panel_SaaS_Menu_Admin {
                                 <li><?php _e('Para crear un submenú, selecciona un elemento padre en el formulario.', 'uipsm'); ?></li>
                                 <li><?php _e('Puedes restringir la visibilidad de los elementos según el rol del usuario.', 'uipsm'); ?></li>
                                 <li><?php _e('Utiliza iconos para mejorar la apariencia del menú.', 'uipsm'); ?></li>
-                                <li><?php _e('Si no ves iconos en la biblioteca, prueba a recargar la página o usa el campo de búsqueda para filtrar.', 'uipsm'); ?></li>
+                                <li><?php _e('Si no ves iconos en la biblioteca, prueba a recargar la página.', 'uipsm'); ?></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <style>
-        /* Estilos adicionales para el campo de icono */
-        .uipsm-icon-field {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .uipsm-icon-preview {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f6f7f7;
-            border-radius: 4px;
-            font-size: 24px;
-            border: 1px solid #ddd;
-        }
-        
-        .uipsm-icon-search {
-            margin-bottom: 15px;
-        }
-        
-        .uipsm-icon-search input {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        /* Mejora visual para la cuadrícula de iconos */
-        .uipsm-icons-grid {
-            max-height: 300px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-        
-        /* Estilos para categorías de iconos */
-        .uipsm-icon-category {
-            margin: 15px 0 5px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #eee;
-            color: #23282d;
-            font-size: 14px;
-        }
-        
-        .uipsm-icons-category-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 15px;
-        }
-        
-        .uipsm-icon-item {
-            cursor: pointer;
-            padding: 8px 5px;
-            text-align: center;
-            border: 1px solid #f0f0f0;
-            border-radius: 4px;
-            transition: all 0.2s;
-        }
-        
-        .uipsm-icon-item:hover {
-            background-color: #f6f7f7;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .uipsm-icon-item i {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 5px;
-            color: #444;
-        }
-        
-        .uipsm-icon-item span {
-            font-size: 9px;
-            display: block;
-            color: #777;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        /* Estilos para pantallas más grandes */
-        @media (min-width: 1200px) {
-            .uipsm-icons-category-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-        
-        @media (max-width: 782px) {
-            .uipsm-icons-category-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        </style>
-        
-        <script>
-        jQuery(document).ready(function($) {
-            // Inicializar escáner de iconos
-            setTimeout(function() {
-                if (typeof window.TablerIconsDirectScanner !== 'undefined') {
-                    // Iniciar el escáner directo
-                    window.TablerIconsDirectScanner.init();
-                }
-            }, 300);
-        });
-        </script>
         <?php
     }
 }
