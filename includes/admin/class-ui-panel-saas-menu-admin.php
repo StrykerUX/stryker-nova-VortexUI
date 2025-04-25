@@ -101,29 +101,20 @@ class UI_Panel_SaaS_Menu_Admin {
             false // Cargar en el head para que se aplique lo antes posible
         );
         
-        // Cargar escáner de iconos alternativo
+        // Cargar escáner directo de iconos (sin AJAX)
         wp_enqueue_script(
-            'tabler-icons-scanner',
-            UIPSM_PLUGIN_URL . 'assets/js/tabler-icons-scanner.js',
+            'tabler-icons-direct-scanner',
+            UIPSM_PLUGIN_URL . 'assets/js/tabler-icons-direct-scanner.js',
             array('jquery'),
             UIPSM_VERSION . '.' . time(),
             true
         );
         
-        // Cargar gestor de iconos
-        wp_enqueue_script(
-            'tabler-icons-manager',
-            UIPSM_PLUGIN_URL . 'assets/js/tabler-icons-manager.js',
-            array('jquery', 'tabler-icons-fix', 'tabler-icons-scanner'),
-            UIPSM_VERSION . '.' . time(),
-            true
-        );
-        
-        // JavaScript personalizado para administración (cargar después del gestor de iconos)
+        // JavaScript personalizado para administración
         wp_enqueue_script(
             'uipsm-admin',
             UIPSM_PLUGIN_URL . 'assets/js/admin-fix-enhanced.js',
-            array('jquery', 'jquery-ui-sortable', 'tabler-icons-manager'),
+            array('jquery', 'jquery-ui-sortable'),
             UIPSM_VERSION . '.' . time(),
             true
         );
@@ -136,7 +127,7 @@ class UI_Panel_SaaS_Menu_Admin {
             'version' => UIPSM_VERSION,
             'debug' => WP_DEBUG ? '1' : '0',
             'icons_dir' => 'assets/tabler-icons-outline/',
-            'use_scanner' => '1', // Habilitar el escáner alternativo
+            'use_direct_scanner' => '1', // Usar el escáner directo sin AJAX
             'strings' => array(
                 'confirm_delete' => __('¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer.', 'uipsm'),
                 'confirm_delete_all' => __('¿Estás seguro de que deseas eliminar TODOS los elementos del menú? Esta acción no se puede deshacer.', 'uipsm'),
@@ -250,7 +241,6 @@ class UI_Panel_SaaS_Menu_Admin {
                         </div>
                         
                         <div class="uipsm-icons-grid">
-                            <p class="uipsm-loading"><?php _e('Cargando iconos...', 'uipsm'); ?></p>
                             <!-- La cuadrícula de iconos se generará dinámicamente con JavaScript -->
                         </div>
                         
@@ -378,6 +368,36 @@ class UI_Panel_SaaS_Menu_Admin {
             margin-bottom: 15px;
         }
         
+        .uipsm-icon-item {
+            cursor: pointer;
+            padding: 8px 5px;
+            text-align: center;
+            border: 1px solid #f0f0f0;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+        
+        .uipsm-icon-item:hover {
+            background-color: #f6f7f7;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .uipsm-icon-item i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 5px;
+            color: #444;
+        }
+        
+        .uipsm-icon-item span {
+            font-size: 9px;
+            display: block;
+            color: #777;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
         /* Estilos para pantallas más grandes */
         @media (min-width: 1200px) {
             .uipsm-icons-category-grid {
@@ -394,43 +414,13 @@ class UI_Panel_SaaS_Menu_Admin {
         
         <script>
         jQuery(document).ready(function($) {
-            // Función para buscar iconos
-            $('#uipsm-icon-search').on('input', function() {
-                const searchTerm = $(this).val().toLowerCase();
-                
-                if (searchTerm === '') {
-                    // Mostrar todas las categorías y todos los iconos
-                    $('.uipsm-icon-category').show();
-                    $('.uipsm-icon-item').show();
-                } else {
-                    // Primero ocultar todas las categorías
-                    $('.uipsm-icon-category').hide();
-                    // Y todos los iconos
-                    $('.uipsm-icon-item').hide();
-                    
-                    // Luego mostrar solo los iconos que coinciden
-                    $('.uipsm-icon-item').each(function() {
-                        const iconName = $(this).data('icon').toLowerCase();
-                        if (iconName.includes(searchTerm)) {
-                            $(this).show();
-                            // Mostrar la categoría correspondiente
-                            $(this).closest('.uipsm-icons-category-grid').prev('.uipsm-icon-category').show();
-                        }
-                    });
-                }
-            });
-            
-            // Iniciar escáner de iconos alternativo después de un breve retraso
+            // Inicializar escáner de iconos
             setTimeout(function() {
-                if ($('.uipsm-icons-grid').is(':empty') || $('.uipsm-icons-grid').html().includes('Cargando iconos')) {
-                    console.log('Forzando escaneo de iconos desde el script inline');
-                    if (typeof window.TablerIconsScanner !== 'undefined') {
-                        window.TablerIconsScanner.scan();
-                    } else if (typeof window.TablerIconsManager !== 'undefined') {
-                        window.TablerIconsManager.initIconPicker();
-                    }
+                if (typeof window.TablerIconsDirectScanner !== 'undefined') {
+                    // Iniciar el escáner directo
+                    window.TablerIconsDirectScanner.init();
                 }
-            }, 1000);
+            }, 300);
         });
         </script>
         <?php
