@@ -75,9 +75,9 @@ class UI_Panel_SaaS_Menu_Admin {
         // JavaScript personalizado para administración
         wp_enqueue_script(
             'uipsm-admin',
-            UIPSM_PLUGIN_URL . 'assets/js/admin-fix.js', // Cambiado a admin-fix.js
+            UIPSM_PLUGIN_URL . 'assets/js/admin-fix-enhanced.js', // Cambiado a la versión mejorada
             array('jquery', 'jquery-ui-sortable'),
-            UIPSM_VERSION,
+            UIPSM_VERSION . '.' . time(), // Añadido timestamp para evitar caché
             true
         );
         
@@ -86,7 +86,7 @@ class UI_Panel_SaaS_Menu_Admin {
             'uipsm-admin',
             UIPSM_PLUGIN_URL . 'assets/css/admin.css',
             array(),
-            UIPSM_VERSION
+            UIPSM_VERSION . '.' . time()
         );
         
         // Cargar CSS local de Tabler Icons
@@ -94,7 +94,7 @@ class UI_Panel_SaaS_Menu_Admin {
             'tabler-icons',
             UIPSM_PLUGIN_URL . 'assets/css/tabler-icons.css',
             array(),
-            UIPSM_VERSION
+            UIPSM_VERSION . '.' . time()
         );
         
         // Cargar gestor de iconos
@@ -102,7 +102,7 @@ class UI_Panel_SaaS_Menu_Admin {
             'tabler-icons-manager',
             UIPSM_PLUGIN_URL . 'assets/js/tabler-icons-manager.js',
             array('jquery'),
-            UIPSM_VERSION,
+            UIPSM_VERSION . '.' . time(),
             true
         );
         
@@ -111,6 +111,8 @@ class UI_Panel_SaaS_Menu_Admin {
             'ajaxurl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('uipsm-admin'),
             'plugin_url' => UIPSM_PLUGIN_URL,
+            'version' => UIPSM_VERSION,
+            'debug' => WP_DEBUG ? '1' : '0',
             'strings' => array(
                 'confirm_delete' => __('¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer.', 'uipsm'),
                 'save_success' => __('Menú guardado correctamente', 'uipsm'),
@@ -274,6 +276,59 @@ class UI_Panel_SaaS_Menu_Admin {
                 </div>
             </div>
         </div>
+        
+        <!-- Script adicional para reforzar la funcionalidad de los botones -->
+        <script type="text/javascript">
+            // Script inline para asegurarse de que los botones funcionen
+            jQuery(document).ready(function($) {
+                // Esperar a que todo esté cargado
+                setTimeout(function() {
+                    // Asegurarse que los eventos están conectados
+                    $(document).off('click', '.uipsm-menu-edit').on('click', '.uipsm-menu-edit', function(e) {
+                        e.preventDefault();
+                        var itemId = $(this).data('id');
+                        console.log('Clic en botón editar inline:', itemId);
+                        
+                        // Si hay una función editMenuItem definida, usarla
+                        if (typeof window.editMenuItem === 'function') {
+                            window.editMenuItem.call(this);
+                        }
+                    });
+                    
+                    $(document).off('click', '.uipsm-menu-delete').on('click', '.uipsm-menu-delete', function(e) {
+                        e.preventDefault();
+                        var itemId = $(this).data('id');
+                        console.log('Clic en botón eliminar inline:', itemId);
+                        
+                        if (confirm('¿Estás seguro de que deseas eliminar este elemento? Esta acción no se puede deshacer.')) {
+                            // AJAX para eliminar el elemento
+                            $.ajax({
+                                url: ajaxurl,
+                                type: 'POST',
+                                data: {
+                                    action: 'uipsm_delete_menu_item',
+                                    nonce: '<?php echo wp_create_nonce('uipsm-admin'); ?>',
+                                    id: itemId
+                                },
+                                success: function(response) {
+                                    if (response.success) {
+                                        // Recargar la página para ver los cambios
+                                        location.reload();
+                                    } else {
+                                        alert('Error al eliminar el elemento');
+                                    }
+                                },
+                                error: function() {
+                                    alert('Error de conexión al eliminar el elemento');
+                                }
+                            });
+                        }
+                    });
+                    
+                    console.log('Eventos reforzados con script inline');
+                }, 1000);
+            });
+        </script>
         <?php
     }
 }
