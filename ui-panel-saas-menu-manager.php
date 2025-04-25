@@ -3,7 +3,7 @@
  * Plugin Name: UI Panel SaaS Menu Manager
  * Plugin URI: https://github.com/StrykerUX/UI-Panel-Saas-Template-WP
  * Description: Un plugin para gestionar el menú lateral del tema UI Panel SaaS Template.
- * Version: 0.2.1
+ * Version: 0.2.2
  * Author: StrykerUX
  * Author URI: https://github.com/StrykerUX
  * License: GPL-2.0+
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Definir constantes del plugin
-define('UIPSM_VERSION', '0.2.1');
+define('UIPSM_VERSION', '0.2.2');
 define('UIPSM_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('UIPSM_PLUGIN_URL', plugin_dir_url(__FILE__));
 
