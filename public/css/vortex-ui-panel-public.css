@@ -1,0 +1,267 @@
+/**
+ * Estilos para la parte pública del plugin
+ */
+:root {
+    --vortex-ui-panel-width: 260px;
+    --vortex-ui-panel-collapsed-width: 60px;
+    --vortex-ui-panel-bg: #ffffff;
+    --vortex-ui-panel-text: #333333;
+    --vortex-ui-panel-border: #e5e5e5;
+    --vortex-ui-panel-hover: #f5f5f5;
+    --vortex-ui-panel-active: #0073aa;
+    --vortex-ui-panel-active-text: #ffffff;
+    --vortex-ui-panel-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    --vortex-ui-panel-transition: all 0.3s ease;
+}
+
+/* Tema oscuro */
+.vortex-ui-panel-theme-dark {
+    --vortex-ui-panel-bg: #1e1e2d;
+    --vortex-ui-panel-text: #bfbfc5;
+    --vortex-ui-panel-border: #2b2b40;
+    --vortex-ui-panel-hover: #171723;
+    --vortex-ui-panel-active: #0073aa;
+    --vortex-ui-panel-active-text: #ffffff;
+}
+
+/* Panel lateral */
+.vortex-ui-panel {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: var(--vortex-ui-panel-width);
+    background-color: var(--vortex-ui-panel-bg);
+    color: var(--vortex-ui-panel-text);
+    border-right: 1px solid var(--vortex-ui-panel-border);
+    z-index: 9999;
+    box-shadow: var(--vortex-ui-panel-shadow);
+    transition: var(--vortex-ui-panel-transition);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Posición del panel */
+.vortex-ui-panel-position-left .vortex-ui-panel {
+    left: 0;
+}
+
+.vortex-ui-panel-position-right .vortex-ui-panel {
+    right: 0;
+    border-right: none;
+    border-left: 1px solid var(--vortex-ui-panel-border);
+}
+
+/* Panel colapsado */
+.vortex-ui-panel-collapsed .vortex-ui-panel {
+    width: var(--vortex-ui-panel-collapsed-width);
+}
+
+/* Cabecera del panel */
+.vortex-ui-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    border-bottom: 1px solid var(--vortex-ui-panel-border);
+}
+
+.vortex-ui-panel-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.vortex-ui-panel-title h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--vortex-ui-panel-text);
+}
+
+.vortex-ui-panel-title p {
+    margin: 5px 0 0;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.vortex-ui-panel-logo {
+    max-height: 40px;
+    margin-right: 10px;
+}
+
+.vortex-ui-panel-toggle {
+    background: none;
+    border: none;
+    color: var(--vortex-ui-panel-text);
+    cursor: pointer;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: transform 0.3s ease;
+}
+
+.vortex-ui-panel-collapsed .vortex-ui-panel-toggle {
+    transform: rotate(180deg);
+}
+
+/* Menú principal */
+.vortex-ui-panel-menu {
+    list-style: none;
+    padding: 15px 0;
+    margin: 0;
+}
+
+.vortex-ui-panel-menu-item {
+    margin: 0;
+    position: relative;
+}
+
+.vortex-ui-panel-menu-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: var(--vortex-ui-panel-text);
+    transition: var(--vortex-ui-panel-transition);
+}
+
+.vortex-ui-panel-menu-link:hover {
+    background-color: var(--vortex-ui-panel-hover);
+    color: var(--vortex-ui-panel-text);
+}
+
+.vortex-ui-panel-menu-link.active {
+    background-color: var(--vortex-ui-panel-active);
+    color: var(--vortex-ui-panel-active-text);
+}
+
+.vortex-ui-panel-menu-icon {
+    margin-right: 10px;
+    font-size: 20px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.vortex-ui-panel-menu-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: var(--vortex-ui-panel-transition);
+}
+
+/* Submenús */
+.vortex-ui-panel-submenu {
+    list-style: none;
+    padding: 0 0 0 20px;
+    margin: 0;
+    display: none;
+}
+
+.vortex-ui-panel-menu-item.open .vortex-ui-panel-submenu {
+    display: block;
+}
+
+.vortex-ui-panel-submenu-link {
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--vortex-ui-panel-text);
+    transition: var(--vortex-ui-panel-transition);
+}
+
+.vortex-ui-panel-submenu-link:hover {
+    background-color: var(--vortex-ui-panel-hover);
+}
+
+.vortex-ui-panel-submenu-link.active {
+    background-color: var(--vortex-ui-panel-active);
+    color: var(--vortex-ui-panel-active-text);
+}
+
+/* Botón expandir/colapsar submenú */
+.vortex-ui-panel-submenu-toggle {
+    position: absolute;
+    right: 15px;
+    top: 12px;
+    background: none;
+    border: none;
+    color: var(--vortex-ui-panel-text);
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0;
+    transition: transform 0.3s ease;
+}
+
+.vortex-ui-panel-menu-item.open .vortex-ui-panel-submenu-toggle {
+    transform: rotate(90deg);
+}
+
+/* Adaptaciones para panel colapsado */
+.vortex-ui-panel-collapsed .vortex-ui-panel-menu-text,
+.vortex-ui-panel-collapsed .vortex-ui-panel-title p,
+.vortex-ui-panel-collapsed .vortex-ui-panel-submenu-toggle {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.vortex-ui-panel-collapsed .vortex-ui-panel-submenu {
+    display: none;
+}
+
+.vortex-ui-panel-collapsed .vortex-ui-panel-title h2 {
+    font-size: 0;
+}
+
+/* Tooltip para panel colapsado */
+.vortex-ui-panel-collapsed .vortex-ui-panel-menu-item:hover::after {
+    content: attr(data-title);
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background: var(--vortex-ui-panel-bg);
+    color: var(--vortex-ui-panel-text);
+    padding: 12px 15px;
+    border-radius: 0 4px 4px 0;
+    box-shadow: var(--vortex-ui-panel-shadow);
+    z-index: 1000;
+    white-space: nowrap;
+}
+
+/* Ajustes para el contenido principal */
+body.vortex-ui-panel-active #wpcontent,
+body.vortex-ui-panel-active #wpfooter {
+    transition: var(--vortex-ui-panel-transition);
+}
+
+body.vortex-ui-panel-active.vortex-ui-panel-position-left #wpcontent,
+body.vortex-ui-panel-active.vortex-ui-panel-position-left #wpfooter {
+    margin-left: var(--vortex-ui-panel-width);
+}
+
+body.vortex-ui-panel-active.vortex-ui-panel-position-right #wpcontent,
+body.vortex-ui-panel-active.vortex-ui-panel-position-right #wpfooter {
+    margin-right: var(--vortex-ui-panel-width);
+}
+
+body.vortex-ui-panel-active.vortex-ui-panel-collapsed.vortex-ui-panel-position-left #wpcontent,
+body.vortex-ui-panel-active.vortex-ui-panel-collapsed.vortex-ui-panel-position-left #wpfooter {
+    margin-left: var(--vortex-ui-panel-collapsed-width);
+}
+
+body.vortex-ui-panel-active.vortex-ui-panel-collapsed.vortex-ui-panel-position-right #wpcontent,
+body.vortex-ui-panel-active.vortex-ui-panel-collapsed.vortex-ui-panel-position-right #wpfooter {
+    margin-right: var(--vortex-ui-panel-collapsed-width);
+}
+
+/* Ocultar admin bar cuando el menú está activo */
+body.vortex-ui-panel-active #wpadminbar {
+    display: none;
+}
+
+/* Ajuste para adminbar */
+html.wp-toolbar {
+    padding-top: 0 !important;
+}
