@@ -145,7 +145,8 @@
                         }
                         
                         if (iconPreview) {
-                            iconPreview.innerHTML = '<i class="ti ' + iconClass + '"></i>';
+                            // FIX: Corregido el formato de clase del icono
+                            iconPreview.innerHTML = '<i class="' + iconClass + '"></i>';
                         }
                     });
                 });
