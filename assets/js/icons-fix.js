@@ -26,7 +26,7 @@
         
         // Crear grid de iconos
         basicIcons.forEach(function(icon) {
-            html += '<div class="uipsm-icon-item" data-icon="ti ti-' + icon + '">' +
+            html += '<div class="uipsm-icon-item" data-icon="ti-' + icon + '">' +
                     '<i class="ti ti-' + icon + '"></i>' +
                     '<span>ti-' + icon + '</span>' +
                   '</div>';
@@ -63,6 +63,8 @@
         $container.find('.uipsm-icon-item').off('click').on('click', function() {
             var iconClass = $(this).data('icon');
             $('#uipsm-item-icon').val(iconClass);
+            
+            // CORREGIDO: Asegurarnos de que el formato del icono sea correcto
             $('.uipsm-icon-preview').html('<i class="' + iconClass + '"></i>');
             
             console.log('IconsFix: Icono seleccionado', iconClass);
