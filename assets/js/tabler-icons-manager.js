@@ -205,7 +205,7 @@
             const self = this;
             
             this.availableIcons.forEach(function(icon) {
-                iconsHtml += '<div class="uipsm-icon-item" data-icon="ti-' + icon + '">' +
+                iconsHtml += '<div class="uipsm-icon-item" data-icon="ti ti-' + icon + '">' +
                     '<i class="ti ti-' + icon + '"></i>' +
                     '<span>ti-' + icon + '</span>' +
                 '</div>';
@@ -220,7 +220,7 @@
                 $('.uipsm-icon-item').off('click').on('click', function() {
                     const iconClass = $(this).data('icon');
                     $('#uipsm-item-icon').val(iconClass);
-                    $('.uipsm-icon-preview').html('<i class="ti ' + iconClass + '"></i>');
+                    $('.uipsm-icon-preview').html('<i class="' + iconClass + '"></i>');
                     
                     // Cerrar visualmente la cuadrícula para mejorar la experiencia
                     $('html, body').animate({
