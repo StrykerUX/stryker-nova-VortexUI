@@ -166,6 +166,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
+    flex: 1;
 }
 
 .uipsm-menu-info i {
@@ -204,25 +205,30 @@
     gap: 5px;
 }
 
-.uipsm-menu-controls button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 3px;
-    color: #555;
+/* Nuevo estilo para el botón eliminar */
+.uipsm-menu-delete {
+    background-color: #f44336 !important;
+    color: white !important;
+    border: none !important;
+    padding: 6px 12px !important;
+    border-radius: 3px !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    font-size: 13px !important;
+    transition: background-color 0.2s !important;
 }
 
-.uipsm-menu-controls button:hover {
-    background: #eee;
-}
-
-.uipsm-menu-edit .dashicons {
-    color: #007cba;
+.uipsm-menu-delete:hover {
+    background-color: #d32f2f !important;
 }
 
 .uipsm-menu-delete .dashicons {
-    color: #cc1818;
+    font-size: 16px !important;
+    width: 16px !important;
+    height: 16px !important;
+    line-height: 1 !important;
 }
 
 .uipsm-sortable-placeholder {
@@ -237,7 +243,26 @@
     margin-top: 20px;
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
+}
+
+/* Estilo para el botón de eliminar todos */
+#uipsm-delete-all {
+    background-color: #AA0000 !important;
+    border-color: #880000 !important;
+    color: white !important;
+    text-shadow: none !important;
+    padding: 0 20px !important;
+    height: 36px !important;
+    line-height: 34px !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    transition: background-color 0.2s !important;
+}
+
+#uipsm-delete-all:hover {
+    background-color: #CC0000 !important;
+    border-color: #AA0000 !important;
 }
 
 .uipsm-empty-menu {
@@ -253,48 +278,6 @@
     padding: 20px;
     text-align: center;
     color: #777;
-}
-
-/* Botones de eliminación */
-.button-danger {
-    background-color: #AA0000 !important;
-    border-color: #880000 !important;
-    color: white !important;
-    text-shadow: none !important;
-}
-
-.button-danger:hover {
-    background-color: #CC0000 !important;
-    border-color: #AA0000 !important;
-}
-
-.uipsm-delete-mode .uipsm-menu-item {
-    position: relative;
-    cursor: pointer;
-}
-
-.uipsm-delete-mode .uipsm-menu-item:hover::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 0, 0, 0.1);
-    z-index: 1;
-    pointer-events: none;
-}
-
-.uipsm-delete-mode .uipsm-menu-controls {
-    display: none;
-}
-
-.uipsm-delete-mode .uipsm-menu-handle {
-    cursor: pointer;
-}
-
-.uipsm-delete-mode .uipsm-menu-handle:hover {
-    background-color: rgba(255, 0, 0, 0.05);
 }
 
 /* Animación de carga */
@@ -411,6 +394,37 @@
 .uipsm-instructions ul,
 .uipsm-instructions ol {
     margin-left: 20px;
+}
+
+/* Modo eliminación */
+.uipsm-delete-mode .uipsm-menu-item {
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.uipsm-delete-mode .uipsm-menu-item:hover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 0, 0, 0.1);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.uipsm-delete-mode .uipsm-menu-controls {
+    display: none;
+}
+
+.uipsm-delete-mode .uipsm-menu-handle {
+    cursor: pointer;
+}
+
+.uipsm-delete-mode .uipsm-menu-handle:hover {
+    background-color: rgba(255, 0, 0, 0.05);
 }
 
 /* Responsive */
