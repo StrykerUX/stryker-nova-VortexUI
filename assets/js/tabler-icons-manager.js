@@ -10,51 +10,9 @@
     window.TablerIconsManager = {
         /**
          * Lista de iconos disponibles
-         * Esta lista se corresponde con los iconos disponibles en el directorio assets/tabler-icons-outline
+         * Esta lista inicial es sólo un placeholder y será reemplazada por los iconos reales
          */
-        availableIcons: [
-            // Navegación y UI básica
-            'home', 'dashboard', 'layout', 'layout-dashboard', 'layout-grid', 'menu', 'search', 
-            'settings', 'chevron-down', 'chevron-up', 'chevron-left', 'chevron-right',
-            'arrow-left', 'arrow-right', 'arrow-up', 'arrow-down', 'arrow-back-up',
-            
-            // Controles e interfaces
-            'plus', 'minus', 'check', 'x', 'edit', 'trash', 'adjustments', 'reload', 'filter',
-            'checkbox', 'eye', 'eye-off', 'share', 'download', 'circle-check', 'circle-x',
-            
-            // Comunicación y mensajería
-            'mail', 'message', 'bell', 'notification', 'send', 'phone',
-            
-            // Documentos y archivos
-            'file', 'folder', 'clipboard', 'tag', 'receipt', 'list',
-            
-            // Dispositivos y hardware
-            'device-mobile', 'device-laptop', 'browser', 'cpu', 'database',
-            
-            // Finanzas y comercio
-            'coin', 'credit-card', 'shopping-cart', 'briefcase',
-            
-            // Medidas y tiempo
-            'calendar', 'clock', 'alarm',
-            
-            // Visualización de datos
-            'chart-bar', 'chart-line',
-            
-            // Multimedia y elementos visuales
-            'photo', 'map', 'map-pin',
-            
-            // Usuarios y seguridad
-            'user', 'users', 'lock', 'shield',
-            
-            // Redes sociales
-            'brand-facebook', 'brand-twitter', 'brand-instagram',
-            
-            // Notificaciones e información
-            'alert-circle', 'info-circle', 'help',
-            
-            // Varios
-            'heart', 'star', 'rocket'
-        ],
+        availableIcons: [],
         
         /**
          * Inicializar el gestor de iconos
@@ -65,11 +23,11 @@
             // Verificar si los iconos están cargados correctamente
             this.verifyIconsLoaded();
             
-            // Inicializar eventos relacionados con los iconos
-            this.initEvents();
-            
             // Cargar dinámicamente los iconos desde el directorio assets/tabler-icons-outline
             this.loadIconsFromDirectory();
+            
+            // Inicializar eventos relacionados con los iconos
+            this.initEvents();
             
             console.log('TablerIconsManager: Inicializado correctamente');
         },
@@ -164,10 +122,8 @@
          * Cargar iconos dinámicamente del directorio
          */
         loadIconsFromDirectory: function() {
-            // En un entorno real, aquí podríamos hacer una llamada AJAX al servidor para obtener la lista de iconos
-            // pero como es un plugin de WordPress, cargaremos todos los iconos que sabemos que existen en el directorio
-            
-            // Primero, expandimos el array availableIcons con todos los iconos encontrados en la carpeta
+            // Esta lista es una representación exacta de los archivos SVG que hay en la carpeta assets/tabler-icons-outline/
+            // basado en la lista que vimos anteriormente en el repositorio
             this.availableIcons = [
                 'adjustments', 'alarm', 'alert-circle', 'arrow-back-up', 'arrow-down', 'arrow-left', 
                 'arrow-right', 'arrow-up', 'bell', 'brand-facebook', 'brand-instagram', 'brand-twitter', 
